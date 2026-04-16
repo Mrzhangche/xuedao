@@ -16,8 +16,10 @@ description: 适用于 cool-admin-vue 8.x 后台模块、CRUD 页面、表单、
 先按这个顺序读取本地规则：
 
 1. `../../cool-admin-vue/.cursorrules`
-2. `../../cool-admin-vue/.cursor/rules/module.mdc`
-3. 按任务类型补读：
+2. `../../cool-admin-vue/.cursor/rules/dev-defaults.mdc`
+3. `../../cool-admin-vue/.cursor/rules/anti-pattern.mdc`
+4. `../../cool-admin-vue/.cursor/rules/module.mdc`
+5. 按任务类型补读：
    - CRUD 页面：`../../cool-admin-vue/.cursor/rules/crud.mdc`
    - 搜索：`../../cool-admin-vue/.cursor/rules/search.mdc`、`../../cool-admin-vue/.cursor/rules/adv-search.mdc`
    - 表格：`../../cool-admin-vue/.cursor/rules/table.mdc`
@@ -31,6 +33,20 @@ description: 适用于 cool-admin-vue 8.x 后台模块、CRUD 页面、表单、
 
 - 默认业务代码优先放在 `src/modules`
 - 通用能力或可复用能力再考虑 `src/plugins`
+- 开发前优先查找 `src/modules/demo` 中最接近的示例，先沿用 demo 的交互结构与组织方式
+- 标准后台管理页面默认优先使用 cool-admin 官方范式：
+  - `cl-crud`
+  - `cl-table`
+  - `cl-search`
+  - `cl-adv-search`
+  - `cl-upsert`
+  - `cl-form`
+  - `useCrud`
+  - `useTable`
+  - `useUpsert`
+  - `useSearch`
+  - `useAdvSearch`
+- 优先复用项目中已有 `service` 与 `useCool()` 能力，不重复封装通用请求流、分页流、弹窗流、表单提交流
 - 模块目录优先遵循：
   - `views`
   - `pages`
@@ -55,6 +71,8 @@ description: 适用于 cool-admin-vue 8.x 后台模块、CRUD 页面、表单、
   - `/~` -> `packages`
 - 服务类型优先参考 `build/cool/eps.d.ts`
 - 优先沿用 `@cool-vue/crud` 的列表、搜索、表单模式，不随意造第二套后台交互体系
+- 对于普通后台 CRUD/搜索/弹窗编辑页面，禁止默认手写一整套 `axios/fetch + queryParams + pagination + dialogVisible + formData + submitLoading` 组合
+- 能通过 demo、官方文档和现有 `service` 落地的功能，不要退回到通用 Vue 自定义实现
 - 不随意修改 `packages`、`src/cool`、基础模块或核心插件，除非当前任务明确要求
 
 ## 推荐工作流
