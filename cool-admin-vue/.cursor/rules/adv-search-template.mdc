@@ -1,0 +1,75 @@
+---
+description: cool-admin-vue 标准高级搜索模板（参考 modules/demo/views/crud/components/adv-search）
+globs: *.vue, *.ts, *.tsx
+---
+
+# cool-admin-vue 标准高级搜索模板
+
+适用场景：
+
+- 搜索条件较多
+- 需要弹窗式高级筛选
+- 行内搜索不够用
+
+参考优先级：
+
+1. 当前项目同类页面
+2. `src/modules/demo/views/crud/components/adv-search`
+3. `https://vue.cool-admin.com/`
+
+## 推荐骨架
+
+```vue
+<cl-crud ref="Crud">
+  <cl-row>
+    <cl-adv-btn />
+  </cl-row>
+
+  <cl-row>
+    <cl-table ref="Table" />
+  </cl-row>
+
+  <cl-row>
+    <cl-flex1 />
+    <cl-pagination />
+  </cl-row>
+
+  <cl-adv-search ref="AdvSearch" />
+</cl-crud>
+```
+
+```ts
+import { useCrud, useAdvSearch, useTable } from '@cool-vue/crud';
+
+const Crud = useCrud({ service: 'test' }, app => app.refresh());
+
+const Table = useTable({
+  columns: []
+});
+
+const AdvSearch = useAdvSearch({
+  items: [
+    {
+      label: '姓名',
+      prop: 'name',
+      component: {
+        name: 'el-input',
+        props: { clearable: true }
+      }
+    }
+  ]
+});
+```
+
+## 关键约束
+
+- 高级搜索优先 `useAdvSearch + cl-adv-search`
+- 高级搜索按钮优先 `cl-adv-btn`
+- 搜索项仍按 `cl-form items` 组织
+- 普通筛选不够时再使用高级搜索
+
+## 不要这样写
+
+- 不要自己手写一个高级搜索弹窗
+- 不要把简单搜索页强行升级成高级搜索
+- 不要把高级搜索条件管理拆成另一套自定义 store

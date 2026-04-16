@@ -21,9 +21,9 @@ description: 适用于 cool-admin-vue 8.x 后台模块、CRUD 页面、表单、
 4. `../../cool-admin-vue/.cursor/rules/module.mdc`
 5. 按任务类型补读：
    - CRUD 页面：`../../cool-admin-vue/.cursor/rules/crud-template.mdc`、`../../cool-admin-vue/.cursor/rules/crud.mdc`
-   - 搜索：`../../cool-admin-vue/.cursor/rules/search.mdc`、`../../cool-admin-vue/.cursor/rules/adv-search.mdc`
+   - 搜索：`../../cool-admin-vue/.cursor/rules/search-template.mdc`、`../../cool-admin-vue/.cursor/rules/search.mdc`、`../../cool-admin-vue/.cursor/rules/adv-search-template.mdc`、`../../cool-admin-vue/.cursor/rules/adv-search.mdc`
    - 表格：`../../cool-admin-vue/.cursor/rules/table.mdc`
-   - 表单或弹窗：`../../cool-admin-vue/.cursor/rules/form.mdc`、`../../cool-admin-vue/.cursor/rules/upsert.mdc`
+   - 表单或弹窗：`../../cool-admin-vue/.cursor/rules/form-template.mdc`、`../../cool-admin-vue/.cursor/rules/form.mdc`、`../../cool-admin-vue/.cursor/rules/upsert-template.mdc`、`../../cool-admin-vue/.cursor/rules/upsert.mdc`
 
 如果当前项目不是直接沿用模板仓库中的 `cool-admin-vue`，则优先读取当前项目中实际存在的同类模块，再回看模板。
 如果当前项目与 `base` 和本地规则都不足以覆盖问题，再回看官方文档 `https://vue.cool-admin.com`。

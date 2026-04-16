@@ -1,0 +1,79 @@
+---
+description: cool-admin-vue 标准新增编辑模板（参考 modules/demo/views/crud/components/upsert）
+globs: *.vue, *.ts, *.tsx
+---
+
+# cool-admin-vue 标准新增编辑模板
+
+适用场景：
+
+- 标准新增/编辑弹窗
+- CRUD 页面中的 upsert 场景
+- 基于 `cl-form` 的新增编辑能力
+
+参考优先级：
+
+1. 当前项目同类页面
+2. `src/modules/demo/views/crud/components/upsert`
+3. `https://vue.cool-admin.com/`
+
+## 推荐骨架
+
+```vue
+<cl-crud ref="Crud">
+  <cl-row>
+    <cl-add-btn />
+  </cl-row>
+
+  <cl-row>
+    <cl-table ref="Table" />
+  </cl-row>
+
+  <cl-row>
+    <cl-flex1 />
+    <cl-pagination />
+  </cl-row>
+
+  <cl-upsert ref="Upsert" />
+</cl-crud>
+```
+
+```ts
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+
+const Crud = useCrud({ service: 'test' }, app => app.refresh());
+
+const Table = useTable({
+  columns: [
+    {
+      type: 'op',
+      buttons: ['edit', 'delete']
+    }
+  ]
+});
+
+const Upsert = useUpsert({
+  items: [
+    {
+      label: '姓名',
+      prop: 'name',
+      component: {
+        name: 'el-input'
+      }
+    }
+  ]
+});
+```
+
+## 关键约束
+
+- 标准新增编辑优先 `useUpsert + cl-upsert`
+- `items` 的写法优先复用 `cl-form` 组织方式
+- 编辑按钮优先使用表格 `op` 列内置 `edit`
+- 新增按钮优先 `cl-add-btn`
+
+## 不要这样写
+
+- 不要默认手写 dialogVisible、formData、submitLoading
+- 不要自己做一套新增/编辑状态流
+- 不要普通 CRUD 页绕开 `cl-upsert`

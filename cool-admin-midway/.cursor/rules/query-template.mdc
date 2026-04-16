@@ -1,0 +1,88 @@
+---
+description: cool-admin-midway 标准查询模板（参考 modules/demo 的 pageQueryOp / entityRenderPage / sqlRenderPage）
+globs: *.ts, *.js
+---
+
+# cool-admin-midway 标准查询模板
+
+适用场景：
+
+- 标准列表筛选
+- 标准分页筛选
+- 联表分页
+- service 中自定义查询
+
+参考优先级：
+
+1. 当前项目同类模块
+2. `src/modules/demo`
+3. `https://node.cool-admin.com`
+
+## 推荐路径
+
+### 场景 1：标准 CRUD 分页筛选
+
+优先放在 `@CoolController` 的 `pageQueryOp` / `listQueryOp` 中：
+
+```ts
+@CoolController({
+  api: ['page', 'list'],
+  entity: DemoGoodsEntity,
+  pageQueryOp: {
+    keyWordLikeFields: ['a.description'],
+    fieldEq: ['a.status'],
+    fieldLike: ['a.title']
+  }
+})
+```
+
+### 场景 2：联表分页
+
+仍优先 `pageQueryOp`：
+
+```ts
+pageQueryOp: {
+  select: ['a.*', 'b.nickName as userName'],
+  join: [
+    {
+      entity: UserInfoEntity,
+      alias: 'b',
+      condition: 'a.id = b.id'
+    }
+  ]
+}
+```
+
+### 场景 3：Service 自定义分页
+
+```ts
+async entityPage(query) {
+  const find = this.demoGoodsEntity.createQueryBuilder();
+  return this.entityRenderPage(find, query);
+}
+```
+
+### 场景 4：确实需要 SQL 分页
+
+```ts
+async sqlPage(query) {
+  return this.sqlRenderPage(
+    'select * from demo_goods ORDER BY id ASC',
+    query,
+    false
+  );
+}
+```
+
+## 关键约束
+
+- 标准筛选优先 `pageQueryOp / listQueryOp`
+- 普通分页优先 `entityRenderPage`
+- SQL 只在必要时使用
+- 查询逻辑要集中，不要 controller 一份、service 一份、别处再一份
+
+## 不要这样写
+
+- 不要能用 `pageQueryOp` 的筛选却手写重复分页查询
+- 不要能用 QueryBuilder 的查询却默认全写原始 SQL
+- 不要把普通查询逻辑散在 Controller 里

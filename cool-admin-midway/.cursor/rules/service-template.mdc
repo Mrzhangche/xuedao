@@ -1,0 +1,84 @@
+---
+description: cool-admin-midway 标准 Service 模板（参考 modules/demo/service）
+globs: *.ts, *.js
+---
+
+# cool-admin-midway 标准 Service 模板
+
+适用场景：
+
+- 新建模块 service
+- 承载业务逻辑
+- 承载自定义查询、业务规则、跨流程调用
+
+参考优先级：
+
+1. 当前项目同类模块
+2. `src/modules/demo/service`
+3. `https://node.cool-admin.com`
+
+## 推荐骨架
+
+```ts
+import { Provide } from '@midwayjs/core';
+import { BaseService } from '@cool-midway/core';
+import { InjectEntityModel } from '@midwayjs/typeorm';
+import { Repository } from 'typeorm';
+import { DemoGoodsEntity } from '../entity/goods';
+
+/**
+ * 商品示例
+ */
+@Provide()
+export class DemoGoodsService extends BaseService {
+  @InjectEntityModel(DemoGoodsEntity)
+  demoGoodsEntity: Repository<DemoGoodsEntity>;
+}
+```
+
+## 常见扩展模板
+
+### 自定义 entity 分页
+
+```ts
+async entityPage(query) {
+  const find = this.demoGoodsEntity.createQueryBuilder();
+  return this.entityRenderPage(find, query);
+}
+```
+
+### 自定义 SQL 分页
+
+```ts
+async sqlPage(query) {
+  return this.sqlRenderPage(
+    'select * from demo_goods ORDER BY id ASC',
+    query,
+    false
+  );
+}
+```
+
+### 重写 CRUD 方法
+
+```ts
+async add(param: any) {
+  const result = await super.add(param);
+  return result;
+}
+```
+
+## 关键约束
+
+- 业务逻辑优先进入 Service
+- Service 优先继承 `BaseService`
+- 实体模型优先通过 `@InjectEntityModel` 注入
+- Controller 只做入口，不承载复杂业务
+- 普通 CRUD 可复用基类的，不要重复造轮子
+
+## 不要这样写
+
+- 不要把业务逻辑堆在 Controller
+- 不要同一业务规则在多个入口复制
+- 不要为了简单逻辑就拆成过多 service/helper 层级
+- 不要普通查询默认全写 SQL

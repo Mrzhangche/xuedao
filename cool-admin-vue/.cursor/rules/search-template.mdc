@@ -1,0 +1,102 @@
+---
+description: cool-admin-vue 标准搜索模板（参考 modules/demo/views/crud/components/search）
+globs: *.vue, *.ts, *.tsx
+---
+
+# cool-admin-vue 标准搜索模板
+
+适用场景：
+
+- 列表页需要多个搜索条件
+- 需要使用 `cl-search` 做行内搜索
+- 条件不多，但比 `cl-search-key` 更丰富
+
+参考优先级：
+
+1. 当前项目同类页面
+2. `src/modules/demo/views/crud/components/search`
+3. `https://vue.cool-admin.com/`
+
+## 推荐骨架
+
+```vue
+<cl-crud ref="Crud">
+  <cl-row>
+    <cl-search ref="Search" />
+  </cl-row>
+
+  <cl-row>
+    <cl-table ref="Table" />
+  </cl-row>
+
+  <cl-row>
+    <cl-flex1 />
+    <cl-pagination />
+  </cl-row>
+</cl-crud>
+```
+
+```ts
+import { useCrud, useSearch, useTable } from '@cool-vue/crud';
+
+const Crud = useCrud(
+  {
+    service: 'test'
+  },
+  app => {
+    app.refresh();
+  }
+);
+
+const Table = useTable({
+  columns: []
+});
+
+const Search = useSearch({
+  items: [
+    {
+      label: '姓名',
+      prop: 'name',
+      component: {
+        name: 'el-input',
+        props: {
+          clearable: true
+        }
+      }
+    }
+  ]
+});
+```
+
+## 关键约束
+
+- 标准搜索优先 `useSearch + cl-search`
+- 搜索项组织方式优先沿用 `cl-form` 的 `items`
+- 与列表联动优先走 `Crud.value?.refresh(params)`
+- 字典型搜索优先复用 `dict.get(...)`
+
+## 推荐联动方式
+
+```ts
+function refresh(params?: any) {
+  Crud.value?.refresh(params);
+}
+```
+
+值变化时刷新：
+
+```ts
+onChange(val: string) {
+  refresh({
+    name: val,
+    page: 1
+  });
+}
+```
+
+## 不要这样写
+
+- 不要手写独立搜索状态机
+- 不要单独再封一套 query/form/search store
+- 不要普通搜索就直接上复杂高级搜索弹窗
+- 不要把搜索条件、列表刷新、分页重置拆成多套自定义逻辑

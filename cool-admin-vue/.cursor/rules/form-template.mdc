@@ -1,0 +1,81 @@
+---
+description: cool-admin-vue 标准表单模板（参考 modules/demo/views/crud/components/form）
+globs: *.vue, *.ts, *.tsx
+---
+
+# cool-admin-vue 标准表单模板
+
+适用场景：
+
+- 需要独立 `cl-form`
+- 需要配置表单参数、按钮、窗口、事件
+- 需要做非标准 CRUD 的表单承载
+
+参考优先级：
+
+1. 当前项目同类页面
+2. `src/modules/demo/views/crud/components/form`
+3. `https://vue.cool-admin.com/`
+
+## 推荐骨架
+
+```ts
+import { useForm } from '@cool-vue/crud';
+
+const Form = useForm();
+
+Form.value?.open({
+  title: '参数配置',
+  isReset: false,
+  form: {},
+  props: {
+    labelWidth: '120px'
+  },
+  items: [
+    {
+      label: '昵称',
+      prop: 'nickName',
+      component: {
+        name: 'el-input'
+      }
+    }
+  ],
+  on: {
+    submit(data, { close }) {
+      close();
+    }
+  }
+});
+```
+
+## 推荐模板
+
+```vue
+<cl-form ref="Form" />
+```
+
+## 关键约束
+
+- 标准表单优先 `useForm + cl-form`
+- 表单项优先使用 `items` 配置
+- 表单弹窗配置优先走 `open({...})`
+- 提交、关闭、自定义按钮优先用内置配置与 `on.submit`
+
+## 常见配置位
+
+- `title`
+- `isReset`
+- `form`
+- `props`
+- `height`
+- `width`
+- `dialog`
+- `op`
+- `items`
+- `on.submit`
+
+## 不要这样写
+
+- 不要普通表单就自己手写 dialog + form model + submit flow
+- 不要把表单配置散落到多个文件和状态里
+- 不要绕开 `items` 去重造一套动态表单系统
