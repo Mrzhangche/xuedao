@@ -1,79 +1,159 @@
 ---
-description: cool-admin-vue 标准新增编辑模板（参考 modules/demo/views/crud/components/upsert）
-globs: *.vue, *.ts, *.tsx
+description: cl-upsert 模板规则，指导基于 cool-admin demo 产出可直接落地的新增编辑模板
+globs: *.tsx, *.ts, *.vue
 ---
 
-# cool-admin-vue 标准新增编辑模板
+# cl-upsert 模板规则
 
-适用场景：
+## 适用场景
 
-- 标准新增/编辑弹窗
-- CRUD 页面中的 upsert 场景
-- 基于 `cl-form` 的新增编辑能力
+- 标准后台 CRUD 页的新增、编辑弹窗
+- 页面已采用 `cl-crud + cl-table + cl-pagination`
+- 需要配合 `cl-add-btn`、操作列 `edit/delete` 使用
+- 希望新增与编辑统一复用一份表单配置
 
-参考优先级：
+## 参考优先级
 
-1. 当前项目同类页面
-2. `src/modules/demo/views/crud/components/upsert`
-3. `https://vue.cool-admin.com/`
+1. 当前项目中同类 CRUD 页的 `useUpsert()` 写法
+2. `src/modules/demo/views/crud/components/upsert/base.vue`
+3. `upsert.mdc` 中事件、配置等示例
+4. `form/config.vue` 与 `form.mdc` 中表单项能力
+5. 官方文档 `https://vue.cool-admin.com`
 
-## 推荐骨架
+## 推荐代码骨架/片段
+
+标准写法优先沿用以下结构：
 
 ```vue
-<cl-crud ref="Crud">
-  <cl-row>
-    <cl-add-btn />
-  </cl-row>
+<template>
+	<cl-crud ref="Crud">
+		<cl-row>
+			<cl-add-btn />
+		</cl-row>
 
-  <cl-row>
-    <cl-table ref="Table" />
-  </cl-row>
+		<cl-row>
+			<cl-table ref="Table" />
+		</cl-row>
 
-  <cl-row>
-    <cl-flex1 />
-    <cl-pagination />
-  </cl-row>
+		<cl-row>
+			<cl-flex1 />
+			<cl-pagination />
+		</cl-row>
 
-  <cl-upsert ref="Upsert" />
-</cl-crud>
-```
+		<cl-upsert ref="Upsert" />
+	</cl-crud>
+</template>
 
-```ts
+<script setup lang="ts">
 import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { useDict } from '/$/dict';
 
-const Crud = useCrud({ service: 'test' }, app => app.refresh());
+const { dict } = useDict();
+
+const Crud = useCrud(
+	{
+		service: 'demoGoods'
+	},
+	app => {
+		app.refresh();
+	}
+);
 
 const Table = useTable({
-  columns: [
-    {
-      type: 'op',
-      buttons: ['edit', 'delete']
-    }
-  ]
+	columns: [
+		{ label: '名称', prop: 'name', minWidth: 160 },
+		{ label: '状态', prop: 'status', minWidth: 120, dict: dict.get('status') },
+		{ label: '创建时间', prop: 'createTime', minWidth: 170, sortable: 'desc' },
+		{
+			type: 'op',
+			buttons: ['edit', 'delete']
+		}
+	]
 });
 
 const Upsert = useUpsert({
-  items: [
-    {
-      label: '姓名',
-      prop: 'name',
-      component: {
-        name: 'el-input'
-      }
-    }
-  ]
+	items: [
+		{
+			label: '名称',
+			prop: 'name',
+			component: {
+				name: 'el-input',
+				props: {
+					clearable: true,
+					placeholder: '请输入名称'
+				}
+			}
+		},
+		{
+			label: '状态',
+			prop: 'status',
+			component: {
+				name: 'cl-select',
+				props: {
+					options: dict.get('status')
+				}
+			}
+		}
+	]
+});
+</script>
+```
+
+需要事件时，优先在 `useUpsert()` 内配置：
+
+```ts
+const Upsert = useUpsert({
+	items,
+	on: {
+		open(isEdit, data) {
+			console.log('open', isEdit, data);
+		},
+		close() {
+			console.log('close');
+		},
+		submit(data, { next, close }) {
+			next(data);
+			close();
+		}
+	}
 });
 ```
 
 ## 关键约束
 
-- 标准新增编辑优先 `useUpsert + cl-upsert`
-- `items` 的写法优先复用 `cl-form` 组织方式
-- 编辑按钮优先使用表格 `op` 列内置 `edit`
-- 新增按钮优先 `cl-add-btn`
+- `cl-upsert` 只用于标准新增/编辑流程，必须与 `cl-crud` 放在同一页面结构中
+- 列表操作列优先使用 `type: 'op'` 和内置 `edit/delete` 按钮，不要自己再造一套编辑入口
+- `items` 配置直接复用 `cl-form` 规则；字段定义、组件定义保持同一风格
+- 新增与编辑尽量共用同一份 `items`，差异逻辑放在 `on.open`、字段显隐或组件属性里处理
+- 提交链路优先走 `cl-upsert` / `useCrud` 内置流程；只有明确业务要求时才在 `submit` 中插入额外逻辑
+- 需要字典、树选项、上传、插槽组件时，先按 demo 中 `cl-form` 的配置方式补齐
 
-## 不要这样写
+## 明确不要怎么写
 
-- 不要默认手写 dialogVisible、formData、submitLoading
-- 不要自己做一套新增/编辑状态流
-- 不要普通 CRUD 页绕开 `cl-upsert`
+不要手写一套：
+
+```ts
+const dialogVisible = ref(false);
+const formData = reactive({});
+const isEdit = ref(false);
+const submitLoading = ref(false);
+```
+
+然后再自己维护打开、回填、校验、提交、关闭全流程。
+
+不要把新增和编辑拆成两个几乎重复的弹窗组件，除非业务字段差异非常大。
+
+不要在操作列里手写很多匿名按钮来替代标准 `type: 'op'`：
+
+```ts
+buttons: [
+	{
+		label: '编辑',
+		onClick(row) {
+			openEdit(row);
+		}
+	}
+]
+```
+
+普通 CRUD 页优先先用内置按钮，再在确有业务需求时定制。

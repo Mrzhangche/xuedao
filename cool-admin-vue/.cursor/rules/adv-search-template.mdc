@@ -1,75 +1,152 @@
 ---
-description: cool-admin-vue 标准高级搜索模板（参考 modules/demo/views/crud/components/adv-search）
-globs: *.vue, *.ts, *.tsx
+description: cl-adv-search 模板规则，指导基于 cool-admin demo 产出可直接落地的高级搜索模板
+globs: *.tsx, *.ts, *.vue
 ---
 
-# cool-admin-vue 标准高级搜索模板
+# cl-adv-search 模板规则
 
-适用场景：
+## 适用场景
 
-- 搜索条件较多
-- 需要弹窗式高级筛选
-- 行内搜索不够用
+- 列表页筛选条件较多，不能全部平铺在顶部
+- 需要“更多搜索”“高级筛选”弹层/抽屉式交互
+- 页面已采用 `cl-crud` 标准结构
+- 搜索项配置与 `cl-form` 高度复用，希望统一表单项写法
 
-参考优先级：
+## 参考优先级
 
-1. 当前项目同类页面
-2. `src/modules/demo/views/crud/components/adv-search`
-3. `https://vue.cool-admin.com/`
+1. 当前项目中已有 `cl-adv-search` 页面
+2. `src/modules/demo/views/crud/components/adv-search/base.vue`
+3. `adv-search.mdc` 中自定义按钮等示例
+4. `form.mdc` 中表单项、组件、插槽配置方式
+5. 官方文档 `https://vue.cool-admin.com`
 
-## 推荐骨架
+## 推荐代码骨架/片段
+
+优先按以下结构实现：
 
 ```vue
-<cl-crud ref="Crud">
-  <cl-row>
-    <cl-adv-btn />
-  </cl-row>
+<template>
+	<cl-crud ref="Crud">
+		<cl-row>
+			<cl-adv-btn />
+		</cl-row>
 
-  <cl-row>
-    <cl-table ref="Table" />
-  </cl-row>
+		<cl-row>
+			<cl-table ref="Table" />
+		</cl-row>
 
-  <cl-row>
-    <cl-flex1 />
-    <cl-pagination />
-  </cl-row>
+		<cl-row>
+			<cl-flex1 />
+			<cl-pagination />
+		</cl-row>
 
-  <cl-adv-search ref="AdvSearch" />
-</cl-crud>
-```
+		<cl-adv-search ref="AdvSearch" />
+	</cl-crud>
+</template>
 
-```ts
-import { useCrud, useAdvSearch, useTable } from '@cool-vue/crud';
+<script setup lang="ts">
+import { useAdvSearch, useCrud, useTable } from '@cool-vue/crud';
+import { useDict } from '/$/dict';
 
-const Crud = useCrud({ service: 'test' }, app => app.refresh());
+const { dict } = useDict();
+
+const Crud = useCrud(
+	{
+		service: 'demoGoods'
+	},
+	app => {
+		app.refresh();
+	}
+);
 
 const Table = useTable({
-  columns: []
+	columns: [
+		{ label: '名称', prop: 'name', minWidth: 160 },
+		{ label: '手机号', prop: 'phone', minWidth: 140 },
+		{ label: '状态', prop: 'status', minWidth: 120, dict: dict.get('status') },
+		{ label: '创建时间', prop: 'createTime', minWidth: 170, sortable: 'desc' }
+	]
 });
 
 const AdvSearch = useAdvSearch({
-  items: [
-    {
-      label: '姓名',
-      prop: 'name',
-      component: {
-        name: 'el-input',
-        props: { clearable: true }
-      }
-    }
-  ]
+	items: [
+		{
+			label: '名称',
+			prop: 'name',
+			component: {
+				name: 'el-input',
+				props: {
+					clearable: true,
+					placeholder: '请输入名称'
+				}
+			}
+		},
+		{
+			label: '状态',
+			prop: 'status',
+			component: {
+				name: 'cl-select',
+				props: {
+					clearable: true,
+					options: dict.get('status')
+				}
+			}
+		},
+		{
+			label: '创建时间',
+			prop: 'createTime',
+			component: {
+				name: 'el-date-picker',
+				props: {
+					type: 'daterange',
+					valueFormat: 'YYYY-MM-DD'
+				}
+			}
+		}
+	]
 });
+</script>
+```
+
+需要自定义操作按钮时，优先使用插槽扩展：
+
+```vue
+<cl-adv-search ref="AdvSearch">
+	<template #slot-btn>
+		<el-button @click="exportData">导出</el-button>
+	</template>
+</cl-adv-search>
 ```
 
 ## 关键约束
 
-- 高级搜索优先 `useAdvSearch + cl-adv-search`
-- 高级搜索按钮优先 `cl-adv-btn`
-- 搜索项仍按 `cl-form items` 组织
-- 普通筛选不够时再使用高级搜索
+- `cl-adv-btn` 与 `cl-adv-search` 必须成对出现，且都放在同一个 `cl-crud` 作用域内
+- `useAdvSearch()` 的 `items` 写法直接复用 `cl-form` 规则，不另起一套字段定义格式
+- 高级搜索负责组织更多筛选项，不负责替代列表主体、分页、表格逻辑
+- 搜索项 `prop` 与后端查询字段保持一致；日期区间、状态值等格式先对齐后端约定
+- 有字典时优先走 `useDict()` + `dict.get()`，不要在组件里写死 option 列表
+- 自定义按钮通过 `slot-btn` 扩展即可，不要改写整个高级搜索弹层结构
 
-## 不要这样写
+## 明确不要怎么写
 
-- 不要自己手写一个高级搜索弹窗
-- 不要把简单搜索页强行升级成高级搜索
-- 不要把高级搜索条件管理拆成另一套自定义 store
+不要只放 `cl-adv-search`，却遗漏触发按钮：
+
+```vue
+<cl-crud>
+	<cl-adv-search ref="AdvSearch" />
+</cl-crud>
+```
+
+不要把普通两三个字段的小搜索也强行写成高级搜索；这种场景优先 `cl-search`。
+
+不要把高级搜索写成独立 `el-dialog + el-form + 查询按钮` 组合：
+
+```vue
+<el-dialog v-model="visible">
+	<el-form :model="form">
+		...
+	</el-form>
+</el-dialog>
+```
+
+不要在 `items` 外再维护一份重复的 `searchForm`、`searchSchema`、`defaultFilters`，避免形成两套来源。

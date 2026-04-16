@@ -1,84 +1,140 @@
 ---
-description: cool-admin-midway 标准 Service 模板（参考 modules/demo/service）
-globs: *.ts, *.js
+description: Midway Service 模板规则，指导基于 cool-admin demo 产出可直接落地的服务层模板
+globs: *.ts
 ---
 
-# cool-admin-midway 标准 Service 模板
+# Midway Service 模板规则
 
-适用场景：
+## 适用场景
 
-- 新建模块 service
-- 承载业务逻辑
-- 承载自定义查询、业务规则、跨流程调用
+- 模块已采用 `BaseService`，需要补标准服务层写法
+- 需要重写 CRUD 生命周期，或补充自定义业务方法
+- 需要使用 TypeORM、`entityRenderPage`、`sqlRenderPage`、`nativeQuery`
+- 想明确什么逻辑放 service，什么逻辑留在 controller 配置层
 
-参考优先级：
+## 参考优先级
 
-1. 当前项目同类模块
-2. `src/modules/demo/service`
-3. `https://node.cool-admin.com`
+1. 当前项目中同类模块已有 `BaseService` 写法
+2. `src/modules/demo/service/goods.ts`
+3. `service.mdc` 中 CRUD、TypeORM、SQL、modifyBefore 示例
+4. 与当前 service 绑定的 demo controller/query 配置
+5. 官方文档 `https://node.cool-admin.com`
 
-## 推荐骨架
+## 推荐代码骨架/片段
+
+标准 service 起步模板：
 
 ```ts
-import { Provide } from '@midwayjs/core';
+import { Inject, Provide } from '@midwayjs/core';
 import { BaseService } from '@cool-midway/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
 import { DemoGoodsEntity } from '../entity/goods';
 
 /**
- * 商品示例
+ * 商品服务
  */
 @Provide()
 export class DemoGoodsService extends BaseService {
-  @InjectEntityModel(DemoGoodsEntity)
-  demoGoodsEntity: Repository<DemoGoodsEntity>;
+	@InjectEntityModel(DemoGoodsEntity)
+	demoGoodsEntity: Repository<DemoGoodsEntity>;
+
+	@Inject()
+	ctx;
+
+	/**
+	 * 新增前/修改前处理
+	 */
+	async modifyBefore(data: any, type: 'add' | 'update' | 'delete') {
+		if (type === 'add') {
+			data.createUserId = this.ctx.admin?.userId;
+		}
+
+		if (type === 'update') {
+			data.updateUserId = this.ctx.admin?.userId;
+		}
+	}
+
+	/**
+	 * 自定义分页查询
+	 */
+	async entityPage(query) {
+		const find = this.demoGoodsEntity.createQueryBuilder('a');
+
+		if (query.status !== undefined) {
+			find.andWhere('a.status = :status', { status: query.status });
+		}
+
+		find.orderBy('a.id', 'DESC');
+		return this.entityRenderPage(find, query);
+	}
+
+	/**
+	 * 自定义 SQL 分页
+	 */
+	async sqlPage(query) {
+		return this.sqlRenderPage(
+			`
+				select a.*
+				from demo_goods a
+				where 1 = 1
+				${this.setSql(query.status !== undefined, 'and a.status = ?', [query.status])}
+				order by a.id desc
+			`,
+			query,
+			false
+		);
+	}
+
+	/**
+	 * 普通业务方法
+	 */
+	async publish(id: number) {
+		await this.demoGoodsEntity.update(id, {
+			status: 1
+		});
+	}
 }
 ```
 
-## 常见扩展模板
+如果只是标准 CRUD 承接查询，不要额外写方法；只有出现以下情况才补 service 自定义方法：
 
-### 自定义 entity 分页
-
-```ts
-async entityPage(query) {
-  const find = this.demoGoodsEntity.createQueryBuilder();
-  return this.entityRenderPage(find, query);
-}
-```
-
-### 自定义 SQL 分页
-
-```ts
-async sqlPage(query) {
-  return this.sqlRenderPage(
-    'select * from demo_goods ORDER BY id ASC',
-    query,
-    false
-  );
-}
-```
-
-### 重写 CRUD 方法
-
-```ts
-async add(param: any) {
-  const result = await super.add(param);
-  return result;
-}
-```
+- 提交前后要补业务字段
+- 同一动作包含多次仓储操作
+- 查询逻辑明显超出 `pageQueryOp` / `listQueryOp`
+- 需要封装给多个 controller / service 复用的业务操作
 
 ## 关键约束
 
-- 业务逻辑优先进入 Service
-- Service 优先继承 `BaseService`
-- 实体模型优先通过 `@InjectEntityModel` 注入
-- Controller 只做入口，不承载复杂业务
-- 普通 CRUD 可复用基类的，不要重复造轮子
+- `Controller` 保持轻量，参数接收与 CRUD 配置放 controller；业务编排、仓储调用、事务性操作放 service
+- 标准 CRUD 仍以 `BaseService` 为基础，优先重写 `add`、`update`、`modifyBefore`、`modifyAfter` 等生命周期，而不是完全绕开框架
+- 简单筛选优先放 `pageQueryOp` / `listQueryOp`；service 只承接确实需要自定义的复杂查询
+- 使用 Repository / QueryBuilder 时，字段名、别名、参数名保持一致，优先可读性清晰
+- 必要时可用 `entityRenderPage()`、`sqlRenderPage()`、`nativeQuery()`，但要先判断是不是标准 TypeORM 查询就够了
+- Service 方法要围绕业务动作命名，如 `publish`、`cancel`、`syncPrice`，不要出现泛化的 `handleData`、`doQuery`
 
-## 不要这样写
+## 明确不要怎么写
 
-- 不要把业务逻辑堆在 Controller
-- 不要同一业务规则在多个入口复制
-- 不要为了简单逻辑就拆成过多 service/helper 层级
-- 不要普通查询默认全写 SQL
+不要把所有 CRUD 查询、参数解析、返回格式处理全塞进 service，然后让 controller 失去 cool-admin 标准配置能力。
+
+不要在 service 里重复再写一套基础增删改查，只是因为不熟悉 `BaseService`：
+
+```ts
+async add(data) {
+	return await this.demoGoodsEntity.save(data);
+}
+
+async update(data) {
+	return await this.demoGoodsEntity.save(data);
+}
+```
+
+如果没有额外业务逻辑，这种重复封装没有价值。
+
+不要为了简单条件筛选直接写原始 SQL：
+
+```ts
+return this.nativeQuery(`select * from demo_goods where status = ${query.status}`);
+```
+
+尤其不要做字符串拼接，避免可维护性和安全性问题。

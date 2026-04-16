@@ -1,102 +1,174 @@
 ---
-description: cool-admin-vue 标准搜索模板（参考 modules/demo/views/crud/components/search）
-globs: *.vue, *.ts, *.tsx
+description: cl-search 模板规则，指导基于 cool-admin demo 产出可直接落地的搜索模板
+globs: *.tsx, *.ts, *.vue
 ---
 
-# cool-admin-vue 标准搜索模板
+# cl-search 模板规则
 
-适用场景：
+## 适用场景
 
-- 列表页需要多个搜索条件
-- 需要使用 `cl-search` 做行内搜索
-- 条件不多，但比 `cl-search-key` 更丰富
+- 为标准 CRUD 列表页补充顶部搜索栏
+- 页面已经使用 `cl-crud + cl-table + cl-pagination`
+- 搜索项较少，默认直接平铺展示
+- 需要基于 `useSearch()` 生成搜索配置，而不是手写一套查询表单
 
-参考优先级：
+## 参考优先级
 
-1. 当前项目同类页面
-2. `src/modules/demo/views/crud/components/search`
-3. `https://vue.cool-admin.com/`
+1. 当前项目中同类列表页已有的 `cl-search` 写法
+2. `src/modules/demo/views/crud/components/search/base.vue`
+3. `search.mdc` 中其他示例（如折叠）
+4. `form.mdc` 中可复用的表单项配置方式
+5. 官方文档 `https://vue.cool-admin.com`
 
-## 推荐骨架
+## 推荐代码骨架/片段
+
+优先按这个骨架输出，字段名按真实业务替换：
 
 ```vue
-<cl-crud ref="Crud">
-  <cl-row>
-    <cl-search ref="Search" />
-  </cl-row>
+<template>
+	<cl-crud ref="Crud">
+		<cl-row>
+			<cl-search ref="Search" />
+		</cl-row>
 
-  <cl-row>
-    <cl-table ref="Table" />
-  </cl-row>
+		<cl-row>
+			<cl-table ref="Table" />
+		</cl-row>
 
-  <cl-row>
-    <cl-flex1 />
-    <cl-pagination />
-  </cl-row>
-</cl-crud>
-```
+		<cl-row>
+			<cl-flex1 />
+			<cl-pagination />
+		</cl-row>
+	</cl-crud>
+</template>
 
-```ts
+<script setup lang="ts">
 import { useCrud, useSearch, useTable } from '@cool-vue/crud';
+import { useDict } from '/$/dict';
+
+const { dict } = useDict();
 
 const Crud = useCrud(
-  {
-    service: 'test'
-  },
-  app => {
-    app.refresh();
-  }
+	{
+		service: 'demoGoods'
+	},
+	app => {
+		app.refresh();
+	}
 );
 
 const Table = useTable({
-  columns: []
+	columns: [
+		{ label: '名称', prop: 'name', minWidth: 160 },
+		{ label: '状态', prop: 'status', minWidth: 120, dict: dict.get('status') },
+		{ label: '创建时间', prop: 'createTime', minWidth: 170, sortable: 'desc' }
+	]
 });
 
+function refresh(params?: any) {
+	Crud.value?.refresh({
+		page: 1,
+		...params
+	});
+}
+
 const Search = useSearch({
-  items: [
-    {
-      label: '姓名',
-      prop: 'name',
-      component: {
-        name: 'el-input',
-        props: {
-          clearable: true
-        }
-      }
-    }
-  ]
+	items: [
+		{
+			label: '名称',
+			prop: 'name',
+			component: {
+				name: 'el-input',
+				props: {
+					clearable: true,
+					placeholder: '请输入名称',
+					onChange(val: string) {
+						refresh({ name: val });
+					}
+				}
+			}
+		},
+		{
+			label: '状态',
+			prop: 'status',
+			component: {
+				name: 'cl-select',
+				props: {
+					clearable: true,
+					options: dict.get('status')
+				}
+			}
+		}
+	],
+	onChange(data, prop) {
+		console.log('search change', prop, data);
+	}
 });
+</script>
+```
+
+常用补充写法：
+
+```ts
+const Search = useSearch({
+	items: [
+		{
+			label: '创建时间',
+			prop: 'createTime',
+			component: {
+				name: 'el-date-picker',
+				props: {
+					type: 'daterange',
+					valueFormat: 'YYYY-MM-DD'
+				}
+			}
+		}
+	]
+});
+```
+
+需要折叠时直接沿用组件参数，而不是重写容器结构：
+
+```vue
+<cl-search ref="Search" reset-btn collapse :inline="false" />
 ```
 
 ## 关键约束
 
-- 标准搜索优先 `useSearch + cl-search`
-- 搜索项组织方式优先沿用 `cl-form` 的 `items`
-- 与列表联动优先走 `Crud.value?.refresh(params)`
-- 字典型搜索优先复用 `dict.get(...)`
+- `cl-search` 必须放在 `cl-crud` 内，并与 `cl-table`、`cl-pagination` 组成同一套 CRUD 结构
+- 搜索配置优先使用 `useSearch({ items })`，字段项写法沿用 `cl-form` 配置
+- 搜索字段的 `prop` 必须与后端查询参数保持一致，不要随意改名
+- 需要输入即搜时，优先在 `component.props.onChange` 中调用 `Crud.value?.refresh()`，并重置到 `page: 1`
+- 字典型筛选优先使用 `cl-select + dict.get(...)`
+- 搜索项数量少时保持默认平铺；字段过多才切换到 `collapse` 或改成 `cl-adv-search`
+- 只在确有需要时写 `onChange`，其职责是监听变化，不负责承载复杂业务逻辑
 
-## 推荐联动方式
+## 明确不要怎么写
+
+不要手写一整套独立搜索栏状态：
 
 ```ts
-function refresh(params?: any) {
-  Crud.value?.refresh(params);
+const queryParams = reactive({
+	name: '',
+	status: ''
+});
+
+function getList() {
+	service.demoGoods.page(queryParams);
 }
 ```
 
-值变化时刷新：
+不要把搜索表单写成普通 `el-form` 再自己拼查询按钮，除非当前页面根本不走 cool-admin CRUD 体系。
+
+不要在 `onChange` 里直接改分页、表格、弹窗等一堆状态：
 
 ```ts
-onChange(val: string) {
-  refresh({
-    name: val,
-    page: 1
-  });
+onChange(data) {
+	page.value = 1;
+	loading.value = true;
+	dialogVisible.value = false;
+	form.value.keyword = data.name;
 }
 ```
 
-## 不要这样写
-
-- 不要手写独立搜索状态机
-- 不要单独再封一套 query/form/search store
-- 不要普通搜索就直接上复杂高级搜索弹窗
-- 不要把搜索条件、列表刷新、分页重置拆成多套自定义逻辑
+不要把高级筛选、复杂区块塞进 `cl-search`；字段明显超过一行或需要展开/收起时，改用 `cl-adv-search`。

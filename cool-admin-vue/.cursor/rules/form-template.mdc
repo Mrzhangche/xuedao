@@ -1,81 +1,155 @@
 ---
-description: cool-admin-vue 标准表单模板（参考 modules/demo/views/crud/components/form）
-globs: *.vue, *.ts, *.tsx
+description: cl-form 模板规则，指导基于 cool-admin demo 产出可直接落地的表单模板
+globs: *.tsx, *.ts, *.vue
 ---
 
-# cool-admin-vue 标准表单模板
+# cl-form 模板规则
 
-适用场景：
+## 适用场景
 
-- 需要独立 `cl-form`
-- 需要配置表单参数、按钮、窗口、事件
-- 需要做非标准 CRUD 的表单承载
+- 需要独立表单弹窗，不直接绑定标准新增/编辑流程
+- 需要配置型弹窗、步骤中的子表单、预览后确认等交互
+- 表单项需要复用 cool-admin 的组件配置、插槽和分组能力
+- 希望通过 `useForm()` 快速打开/关闭/提交表单
 
-参考优先级：
+## 参考优先级
 
-1. 当前项目同类页面
-2. `src/modules/demo/views/crud/components/form`
-3. `https://vue.cool-admin.com/`
+1. 当前项目中已有 `useForm()` 弹窗写法
+2. `src/modules/demo/views/crud/components/form/config.vue`
+3. `form.mdc` 中组件渲染、层级显示等示例
+4. 若表单用于新增/编辑，再参考 `upsert/base.vue`
+5. 官方文档 `https://vue.cool-admin.com`
 
-## 推荐骨架
+## 推荐代码骨架/片段
 
-```ts
+基础模板优先按下面写：
+
+```vue
+<template>
+	<el-button @click="open">打开表单</el-button>
+	<cl-form ref="Form">
+		<template #slot-btns>
+			<el-button type="danger">自定义按钮</el-button>
+		</template>
+	</cl-form>
+</template>
+
+<script setup lang="ts">
 import { useForm } from '@cool-vue/crud';
+import { ElMessage } from 'element-plus';
 
 const Form = useForm();
 
-Form.value?.open({
-  title: '参数配置',
-  isReset: false,
-  form: {},
-  props: {
-    labelWidth: '120px'
-  },
-  items: [
-    {
-      label: '昵称',
-      prop: 'nickName',
-      component: {
-        name: 'el-input'
-      }
-    }
-  ],
-  on: {
-    submit(data, { close }) {
-      close();
-    }
-  }
-});
+function open() {
+	Form.value?.open({
+		title: '表单标题',
+		isReset: false,
+		form: {
+			name: '默认名称'
+		},
+		props: {
+			labelWidth: '120px',
+			labelPosition: 'top'
+		},
+		width: '60%',
+		height: '60vh',
+		dialog: {
+			controls: ['close']
+		},
+		op: {
+			justify: 'flex-end',
+			saveButtonText: '提交',
+			closeButtonText: '关闭',
+			buttons: [
+				{
+					label: '自定义按钮',
+					onClick() {
+						ElMessage.success('点击成功');
+					}
+				},
+				'close',
+				'save',
+				'slot-btns'
+			]
+		},
+		items: [
+			{
+				label: '名称',
+				prop: 'name',
+				component: {
+					name: 'el-input',
+					props: {
+						clearable: true,
+						placeholder: '请输入名称'
+					}
+				}
+			},
+			{
+				label: '状态',
+				prop: 'status',
+				component: {
+					name: 'el-switch'
+				}
+			}
+		],
+		on: {
+			submit(data, { close }) {
+				console.log(data);
+				close();
+			}
+		}
+	});
+}
+</script>
 ```
 
-## 推荐模板
+需要分组时，直接沿用 `children + cl-form-card`：
 
-```vue
-<cl-form ref="Form" />
+```ts
+items: [
+	{
+		component: {
+			name: 'cl-form-card',
+			props: {
+				label: '基础信息',
+				expand: true
+			}
+		},
+		children: [
+			{
+				label: '账号',
+				prop: 'account',
+				component: { name: 'el-input' }
+			}
+		]
+	}
+]
 ```
 
 ## 关键约束
 
-- 标准表单优先 `useForm + cl-form`
-- 表单项优先使用 `items` 配置
-- 表单弹窗配置优先走 `open({...})`
-- 提交、关闭、自定义按钮优先用内置配置与 `on.submit`
+- 独立表单优先使用 `cl-form + useForm().open()`，不要自己维护另一套弹窗表单协议
+- `items` 是主入口，字段、组件、分组、插槽都围绕 `items` 配置
+- 需要默认值时优先写在 `form` 或字段 `value` 中，保持来源单一
+- 弹窗宽高、按钮区、头部控制等通过 `width`、`height`、`dialog`、`op` 配置，不要自己包一层新的 dialog 协议
+- 提交逻辑写在 `on.submit` 中，并通过回调里的 `close()` 控制关闭
+- 表单配置若与 `upsert` 共用，优先抽出同一份 `items` 或沿用同样字段结构
 
-## 常见配置位
+## 明确不要怎么写
 
-- `title`
-- `isReset`
-- `form`
-- `props`
-- `height`
-- `width`
-- `dialog`
-- `op`
-- `items`
-- `on.submit`
+不要自己再包一层 `el-dialog + el-form + footer` 来替代 `cl-form`：
 
-## 不要这样写
+```vue
+<el-dialog v-model="visible">
+	<el-form :model="formData">
+		...
+	</el-form>
+	<template #footer>
+		<el-button @click="submit">提交</el-button>
+	</template>
+</el-dialog>
+```
 
-- 不要普通表单就自己手写 dialog + form model + submit flow
-- 不要把表单配置散落到多个文件和状态里
-- 不要绕开 `items` 去重造一套动态表单系统
+不要把 `items`、`defaultForm`、`dialogConfig`、`footerButtons` 分散在多个无关联常量里，导致阅读时不知道 `Form.open()` 最终用的是什么。
+
+不要在 `submit` 里直接塞入大量页面级联动、路由跳转、列表状态重置；`cl-form` 负责表单弹窗，不负责承接整个页面流程编排。

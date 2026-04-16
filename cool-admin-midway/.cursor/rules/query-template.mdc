@@ -1,88 +1,120 @@
 ---
-description: cool-admin-midway 标准查询模板（参考 modules/demo 的 pageQueryOp / entityRenderPage / sqlRenderPage）
-globs: *.ts, *.js
+description: Midway Query 模板规则，指导基于 cool-admin demo 产出可直接落地的查询配置模板
+globs: *.ts
 ---
 
-# cool-admin-midway 标准查询模板
+# Midway Query 模板规则
 
-适用场景：
+## 适用场景
 
-- 标准列表筛选
-- 标准分页筛选
-- 联表分页
-- service 中自定义查询
+- 为 `@CoolController` 的 `page` / `list` 增加标准筛选能力
+- 前端 `cl-search` / `cl-adv-search` / 表格排序需要后端查询字段承接
+- 查询以标准 CRUD 为主，不需要为了普通筛选额外写自定义 controller
+- 需要通过 `pageQueryOp`、`listQueryOp`、`join`、`where` 组织查询条件
 
-参考优先级：
+## 参考优先级
 
-1. 当前项目同类模块
-2. `src/modules/demo`
-3. `https://node.cool-admin.com`
+1. 当前项目中同类模块已有的 `pageQueryOp` / `listQueryOp`
+2. `src/modules/demo/controller/admin/goods.ts` 这类 demo controller
+3. `controller.mdc` 中 CRUD 查询配置说明
+4. `service/goods.ts` 中 `entityPage`、`sqlPage` 等查询示例
+5. 官方文档 `https://node.cool-admin.com`
 
-## 推荐路径
+## 推荐代码骨架/片段
 
-### 场景 1：标准 CRUD 分页筛选
-
-优先放在 `@CoolController` 的 `pageQueryOp` / `listQueryOp` 中：
+标准分页查询优先写在 Controller 的 `@CoolController` 配置里：
 
 ```ts
+import { CoolController, BaseController } from '@cool-midway/core';
+import { DemoGoodsEntity } from '../../entity/goods';
+import { UserInfoEntity } from '../../../user/entity/info';
+import { DemoGoodsService } from '../../service/goods';
+
+/**
+ * 商品模块-商品信息
+ */
 @CoolController({
-  api: ['page', 'list'],
-  entity: DemoGoodsEntity,
-  pageQueryOp: {
-    keyWordLikeFields: ['a.description'],
-    fieldEq: ['a.status'],
-    fieldLike: ['a.title']
-  }
+	api: ['add', 'delete', 'update', 'info', 'list', 'page'],
+	entity: DemoGoodsEntity,
+	service: DemoGoodsService,
+	pageQueryOp: {
+		keyWordLikeFields: ['a.title', 'a.description'],
+		fieldEq: ['a.status', { column: 'a.userId', requestParam: 'userId' }],
+		fieldLike: [{ column: 'a.title', requestParam: 'title' }],
+		select: ['a.*', 'b.nickName as userName'],
+		join: [
+			{
+				entity: UserInfoEntity,
+				alias: 'b',
+				condition: 'a.userId = b.id',
+				type: 'leftJoin'
+			}
+		],
+		addOrderBy: {
+			createTime: 'DESC'
+		},
+		where: async ctx => {
+			const { startTime, endTime } = ctx.request.body;
+
+			return [
+				['a.isDeleted = :isDeleted', { isDeleted: false }],
+				[
+					'a.createTime >= :startTime',
+					{ startTime },
+					Boolean(startTime)
+				],
+				['a.createTime <= :endTime', { endTime }, Boolean(endTime)]
+			];
+		}
+	},
+	listQueryOp: {
+		fieldEq: ['a.status'],
+		addOrderBy: {
+			sortNum: 'ASC',
+			id: 'DESC'
+		}
+	}
 })
+export class AdminDemoGoodsController extends BaseController {}
 ```
 
-### 场景 2：联表分页
-
-仍优先 `pageQueryOp`：
+前后端字段对齐时，优先按这种映射方式写：
 
 ```ts
-pageQueryOp: {
-  select: ['a.*', 'b.nickName as userName'],
-  join: [
-    {
-      entity: UserInfoEntity,
-      alias: 'b',
-      condition: 'a.id = b.id'
-    }
-  ]
-}
-```
-
-### 场景 3：Service 自定义分页
-
-```ts
-async entityPage(query) {
-  const find = this.demoGoodsEntity.createQueryBuilder();
-  return this.entityRenderPage(find, query);
-}
-```
-
-### 场景 4：确实需要 SQL 分页
-
-```ts
-async sqlPage(query) {
-  return this.sqlRenderPage(
-    'select * from demo_goods ORDER BY id ASC',
-    query,
-    false
-  );
-}
+fieldEq: [
+	'a.status',
+	{ column: 'a.categoryId', requestParam: 'categoryId' }
+],
+fieldLike: [{ column: 'a.title', requestParam: 'keyword' }]
 ```
 
 ## 关键约束
 
-- 标准筛选优先 `pageQueryOp / listQueryOp`
-- 普通分页优先 `entityRenderPage`
-- SQL 只在必要时使用
-- 查询逻辑要集中，不要 controller 一份、service 一份、别处再一份
+- 普通筛选优先写在 `pageQueryOp` / `listQueryOp`，不要为了标准列表筛选随便新开自定义分页接口
+- 查询字段命名要和前端搜索项 `prop` 对齐；前端传什么，后端就清晰接什么
+- 多表查询优先使用 `join + select`；主表默认别名按 cool-admin 习惯使用 `a`
+- 需要固定过滤条件、时间区间、租户/用户边界时，优先通过 `where(ctx)` 追加
+- 简单排序优先放 `addOrderBy`，不要在 service 里重复写同一份排序逻辑
+- 只要标准 CRUD 能承接，就把查询定义留在 controller 配置层，保持 service 轻量
 
-## 不要这样写
+## 明确不要怎么写
 
-- 不要能用 `pageQueryOp` 的筛选却手写重复分页查询
-- 不要能用 QueryBuilder 的查询却默认全写原始 SQL
-- 不要把普通查询逻辑散在 Controller 里
+不要把本该写在 `pageQueryOp` 的普通筛选逻辑塞进自定义 `page()` 方法里：
+
+```ts
+async page() {
+	const { status, title } = this.ctx.request.body;
+	const qb = this.demoGoodsEntity.createQueryBuilder('a');
+	if (status) {
+		qb.andWhere('a.status = :status', { status });
+	}
+	if (title) {
+		qb.andWhere('a.title like :title', { title: `%${title}%` });
+	}
+	return qb.getMany();
+}
+```
+
+不要同时在前端传 `keyword`，后端却只配置 `title`、`name` 等另一套参数名，导致搜索失配。
+
+不要为一个简单状态筛选就直接退回手写 SQL，标准 QueryOp 足够时优先用 QueryOp。
