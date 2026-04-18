@@ -55,7 +55,16 @@
    - `02-提交前检查.md`：提交前检查
    - `03-交付前检查.md`：交付前检查
 
-### 第四组：项目长期文档
+### 第四组：项目长期文档 / 维护入口
+
+- `00-system/项目开发维护索引怎么建.md`
+  - 定义什么情况下项目应该补“开发维护索引”
+  - 说明索引至少要包含哪些内容，以及它和 README、模块 README、坑位文档、任务执行卡的关系
+- `00-system/项目专属坑位文档维护机制.md`
+  - 定义每个项目什么时候应该维护项目专属坑位文档
+  - 用户说“把这个坑记录一下”时，AI 默认应按这份机制处理
+- `00-system/项目专属坑位与兼容记录-模板.md`
+  - 每个项目都可复制使用的项目专属坑位文档模板
 
 9. `00-system/`
    - 放系统长期说明
@@ -91,6 +100,7 @@
 ### 3. 我要做一个新功能
 先看：
 
+- `00-system/项目开发维护索引怎么建.md`
 - `01-新人先看.md`
 - `02-功能开发怎么走（超短版）.md`
 - `03-功能开发怎么走.md`
@@ -108,7 +118,16 @@
 - `checklists/核心模块修改前检查.md`
 - `skills/cool-project-stack/references/code-organization.md`（代码组织、模块复用、中文注释要求）
 
-### 4. 我做的功能会拆成多期，文档怎么放
+### 4. 我在长期维护项目里接手时，先看哪里
+先看：
+
+- `README.md`
+- `00-system/项目开发维护索引怎么建.md`
+- `00-system/系统总说明怎么写.md`
+- `00-system/项目与base差异怎么记录.md`
+- 对应模块 `README.md`
+
+### 5. 我做的功能会拆成多期，文档怎么放
 先看：
 
 - `03-功能开发怎么走.md`
@@ -160,17 +179,17 @@ docs/
       constraints.md        # 长期约束说明（可选）
       entities.md           # 稳定后的核心实体说明（可选）
       v0.1-requirements.md
-      v0.1-design.md
-      v0.1-database.md
+      v0.1-product-design.md
+      v0.1-technical-design.md
       v0.1-implementation.md
       v0.1-task-card.md
       v0.2-requirements.md
-      v0.2-design.md
-      v0.2-implementation.md
+      v0.2-product-design.md
+      v0.2-technical-design.md
       v0.2-task-card.md
       v1.0-requirements.md
-      v1.0-design.md
-      v1.0-test-checklist.md
+      v1.0-product-design.md
+      v1.0-technical-design.md
       v1.0-delivery.md
 ```
 
@@ -207,6 +226,8 @@ docs/
 - 功能入口
 - 长期维护说明
 - 当前项目与 base 的关键差异怎么判断
+- 开发维护索引建立规则
+- 项目专属坑位维护机制
 
 ### `01-modules/`
 放模块级文档：
