@@ -86,6 +86,16 @@
 
 ## 常见场景怎么找文档
 
+### 0. 我看到了 Superpowers 文件
+先看：
+
+- `03-功能开发怎么走.md`
+- `07-任务执行卡模板.md`
+- `skills/cool-project-stack/SKILL.md`
+- `skills/cool-team-docs/SKILL.md`
+
+遇到 `task_plan.md`、`findings.md`、`progress.md`、`v*-task-card.md` 时，不要直接继续 Superpowers 流程。当前项目存在 `skills/cool-project-stack/SKILL.md` 时，项目自有 skill 是主流程；先执行 Superpowers 接管，把外部产物合并进标准 docs/task-card，补齐 Codex 多 Agent 协作计划、允许修改文件边界和执行记录表，再把状态标记为“待确认”。原始文件建议放到 `docs/.superpowers-archive/`，不要直接删除。
+
 ### 1. 我是新人，刚接手项目
 先看：
 
