@@ -85,9 +85,10 @@
 2. 长期约束说明：`constraints.md`（如果有）
 3. 核心实体/模块总览：`entities.md` / `overview.md`（如果有）
 4. 当前版本的需求文档
-5. 当前版本的设计文档
-6. 当前版本的开发实施文档
-7. 当前版本的测试清单 / 交付说明
+5. 当前版本的产品设计文档
+6. 当前版本的技术设计文档
+7. 当前版本的开发实施文档
+8. 当前版本的测试清单 / 交付说明
 
 ### 如果你只想继续当前版本开发
 
@@ -95,9 +96,10 @@
 
 1. 本文档里的“当前版本入口”
 2. 当前版本的 `requirements`
-3. 当前版本的 `design`
-4. 当前版本的 `implementation`
-5. 当前版本对应的任务执行卡
+3. 当前版本的 `product-design`
+4. 当前版本的 `technical-design`
+5. 当前版本的 `implementation`
+6. 当前版本对应的任务执行卡
 
 ### 如果你要评估历史决策或继续扩展下一期
 
@@ -118,7 +120,7 @@
 
 1. 先确认当前版本目标与边界
 2. 再确认当前版本继承上一版哪些规则
-3. 再补当前版本的需求 / 设计 / 实施文档
+3. 再补当前版本的需求 / 产品设计 / 技术设计 / 实施文档
 4. 再按实施顺序开发与联调
 5. 开发完成后补测试清单、交付说明，并回写本 README
 
@@ -148,7 +150,8 @@
 ### 当前版本建议先看
 
 - `v0.2-requirements.md`
-- `v0.2-design.md`
+- `v0.2-product-design.md`
+- `v0.2-technical-design.md`
 - `v0.2-implementation.md`
 - `v0.2-task-card.md`
 
@@ -200,7 +203,8 @@
 - 解决的问题：[这一版解决什么]
 - 文档入口：
   - `v0.1-requirements.md`
-  - `v0.1-design.md`
+  - `v0.1-product-design.md`
+  - `v0.1-technical-design.md`
   - `v0.1-database.md`
   - `v0.1-api.md`
   - `v0.1-implementation.md`
@@ -214,7 +218,8 @@
 - 相对上一版变化：[新增 / 调整 / 废弃]
 - 文档入口：
   - `v0.2-requirements.md`
-  - `v0.2-design.md`
+  - `v0.2-product-design.md`
+  - `v0.2-technical-design.md`
   - `v0.2-implementation.md`
   - `v0.2-task-card.md`
 
@@ -225,7 +230,8 @@
 - 解决的问题：[这一版解决什么]
 - 文档入口：
   - `v1.0-requirements.md`
-  - `v1.0-design.md`
+  - `v1.0-product-design.md`
+  - `v1.0-technical-design.md`
   - `v1.0-test-checklist.md`
   - `v1.0-delivery.md`
 
@@ -258,7 +264,7 @@
 - 当前主版本：`v0.2`
 - 当前版本基于：`v0.1`
 - 当前版本目标：在已有渠道录入能力上，补齐审核流和状态通知
-- 建议先看：`v0.2-requirements.md`、`v0.2-design.md`、`v0.2-implementation.md`
+- 建议先看：`v0.2-requirements.md`、`v0.2-product-design.md`、`v0.2-technical-design.md`、`v0.2-implementation.md`
 
 ### 长期约束 / 共用说明入口
 

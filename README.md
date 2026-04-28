@@ -19,7 +19,7 @@
 
 如果你刚接手这个仓库，先按下面顺序看：
 
-1. `docs/START.md`
+1. `docs/01-新人先看.md`
    新人最快入口，告诉你先看哪个 skill、怎么开始做事。
 2. `skills/cool-project-stack/SKILL.md`
    团队总控规则，告诉 AI 和人应该怎么判断任务、怎么走流程。
@@ -60,11 +60,11 @@ bash skills/cool-project-stack/scripts/install-team-skills.sh
 
 做法：
 
-1. 先看 `docs/START.md`
+1. 先看 `docs/01-新人先看.md`
 2. 找到对应端的 skill
 3. 先看同类代码
 4. 改代码
-5. 按 `docs/checklists/pre-commit.md` 自检
+5. 按 `docs/checklists/02-提交前检查.md` 自检
 
 ### 2. 新功能
 
@@ -72,7 +72,7 @@ bash skills/cool-project-stack/scripts/install-team-skills.sh
 
 做法：
 
-1. 先看 `docs/START.md`
+1. 先看 `docs/01-新人先看.md`
 2. 先走任务分级
 3. 补需求 / 技术 / 实施文档
 4. 涉及接口就补 API 文档
