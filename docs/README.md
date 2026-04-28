@@ -94,7 +94,7 @@
 - `skills/cool-project-stack/SKILL.md`
 - `skills/cool-team-docs/SKILL.md`
 
-遇到 `task_plan.md`、`findings.md`、`progress.md`、`v*-task-card.md` 时，不要直接继续 Superpowers 流程。当前项目存在 `skills/cool-project-stack/SKILL.md` 时，项目自有 skill 是主流程；先执行 Superpowers 接管，把外部产物合并进标准 docs/task-card，补齐 Codex 多 Agent 协作计划、允许修改文件边界和执行记录表，再把状态标记为“待确认”。原始文件建议放到 `docs/.superpowers-archive/`，不要直接删除。
+遇到 `task_plan.md`、`findings.md`、`progress.md`、`v*-task-card.md` 时，不要直接继续 Superpowers 流程。当前项目存在 `skills/cool-project-stack/SKILL.md` 时，项目自有 skill 是主流程；先执行 Superpowers 接管，把外部产物合并进当前项目风格的中文标准文档或任务执行卡，补齐 Codex 多 Agent 协作计划、允许修改文件边界和执行记录表，再把状态标记为“待确认”。原始文件建议放到 `docs/.superpowers-archive/`，不要直接删除，也不要继续作为项目标准入口。
 
 ### 1. 我是新人，刚接手项目
 先看：
@@ -162,14 +162,16 @@
 - 模块 `README.md` 必须负责串联版本规划、阅读顺序、当前版本入口
 - 写模块入口时，优先参考模板：`skills/cool-project-stack/templates/module-readme-template.md`
 - 版本文档按版本拆，长期共用内容留在模块级文档
+- 新建文档命名优先沿用当前项目已有风格；如果项目已有中文编号命名，模块版本文档也继续用 `v0.1/01-需求说明.md` 这类中文编号文件名
+- 英文版本文件名只作为旧格式兼容或外部产物识别，不作为新建默认示例
 - 新版本如果基于旧版本增强，优先写“继承什么、调整什么”，不要整份复制重写
 
 ### 5. 我要准备交付
 先看：
 
 - `checklists/03-交付前检查.md`
-- 当前模块下的 `07-test-checklist.md`
-- 当前模块下的 `08-delivery.md`
+- 当前模块版本目录下的 `07-测试清单.md`
+- 当前模块版本目录下的 `08-交付说明.md`
 
 ## 推荐目录结构
 
@@ -189,28 +191,35 @@ docs/
     02-提交前检查.md
     03-交付前检查.md
   00-system/
-    system-overview.md
-    system-function-manual.md
+    系统总说明.md
+    系统功能说明.md
     系统总说明怎么写.md
     项目与base差异怎么记录.md
   01-modules/
     模块名/
       README.md
-      constraints.md        # 长期约束说明（可选）
-      entities.md           # 稳定后的核心实体说明（可选）
-      v0.1-requirements.md
-      v0.1-product-design.md
-      v0.1-technical-design.md
-      v0.1-implementation.md
-      v0.1-task-card.md
-      v0.2-requirements.md
-      v0.2-product-design.md
-      v0.2-technical-design.md
-      v0.2-task-card.md
-      v1.0-requirements.md
-      v1.0-product-design.md
-      v1.0-technical-design.md
-      v1.0-delivery.md
+      长期约束说明.md     # 长期约束说明（可选）
+      核心实体说明.md     # 稳定后的核心实体说明（可选）
+      v0.1/
+        00-任务执行卡.md
+        01-需求说明.md
+        02-产品设计.md
+        03-技术设计.md
+        04-数据库设计.md
+        05-接口说明.md
+        06-开发实施.md
+        07-测试清单.md
+        08-交付说明.md
+      v0.2/
+        00-任务执行卡.md
+        01-需求说明.md
+        02-产品设计.md
+        03-技术设计.md
+      v1.0/
+        01-需求说明.md
+        02-产品设计.md
+        03-技术设计.md
+        08-交付说明.md
 ```
 
 ## 文档怎么分

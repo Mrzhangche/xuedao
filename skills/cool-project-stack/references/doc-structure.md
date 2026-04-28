@@ -80,23 +80,32 @@
 
 ## 推荐目录结构
 
+命名优先级先看当前项目已有文档。若当前项目已有 `docs/01-新人先看.md`、`docs/02-功能开发怎么走（超短版）.md`、`docs/checklists/核心模块修改前检查.md` 这类中文编号命名，新建模块文档必须继续使用中文编号文件名。
+
 ```text
 docs/
   README.md
   00-system/
-    system-overview.md
-    system-function-manual.md
+    系统总说明.md
+    系统功能说明.md
   01-modules/
-    student/
-      01-requirements.md
-      02-product-design.md
-      03-technical-design.md
-      04-database.md
-      05-api.md
-      06-implementation.md
-      07-test-checklist.md
-      08-delivery.md
+    学习内容与权限系统/
+      README.md
+      长期约束说明.md
+      核心实体说明.md
+      v0.1/
+        00-任务执行卡.md
+        01-需求说明.md
+        02-产品设计.md
+        03-技术设计.md
+        04-数据库设计.md
+        05-接口说明.md
+        06-开发实施.md
+        07-测试清单.md
+        08-交付说明.md
 ```
+
+英文文件名只作为旧格式识别 / 兼容，不作为新建项目文档默认示例。
 
 ## 为什么这样分
 
@@ -116,9 +125,9 @@ docs/
 
 放长期维护、跨模块复用的项目级文档：
 
-- `system-overview.md`
+- `系统总说明.md`
   写系统目标、端划分、模块边界、技术栈、权限角色、部署与外部依赖
-- `system-function-manual.md`
+- `系统功能说明.md`
   写已经交付的功能入口、适用角色、主要流程、注意事项、限制条件
 
 这两个文件不是一次性文档，而是每次功能完成后持续更新。
@@ -127,23 +136,31 @@ docs/
 
 每个模块单独一个目录，便于把需求、设计、数据库、接口、测试、交付串起来。
 
-推荐一个模块目录里按固定顺序放：
+推荐一个模块目录里先按当前项目已有命名风格放文档。若项目已有中文编号命名，则模块版本目录也优先使用中文编号：
 
-- `01-requirements.md`
-- `02-product-design.md`
-- `03-technical-design.md`
-- `04-database.md`
-- `05-api.md`
-- `06-implementation.md`
-- `07-test-checklist.md`
-- `08-delivery.md`
+- `README.md`
+- `长期约束说明.md`
+- `核心实体说明.md`
+- `v0.1/00-任务执行卡.md`
+- `v0.1/01-需求说明.md`
+- `v0.1/02-产品设计.md`
+- `v0.1/03-技术设计.md`
+- `v0.1/04-数据库设计.md`
+- `v0.1/05-接口说明.md`
+- `v0.1/06-开发实施.md`
+- `v0.1/07-测试清单.md`
+- `v0.1/08-交付说明.md`
 
 不是每次都必须 8 份全开，但文件顺序尽量固定。
 
 ## 命名建议
 
-- 目录名优先使用模块英文代码名，如 `student`、`course-schedule`
-- 文档标题可以用中文
+- **最高优先级：当前项目已有文档命名风格**
+- 如果项目已有 `01-新人先看.md`、`03-功能开发怎么走.md`、`07-任务执行卡模板.md` 这类中文编号命名，新建模块文档也必须继续使用中文编号命名
+- 目录名可以优先使用模块英文代码名，如 `student`、`course-schedule`；如果当前项目已有中文模块目录，也优先沿用当前项目风格
+- 文档标题使用中文
+- `task_plan.md`、`findings.md`、`progress.md`、`v*-task-card.md` 只作为 Superpowers / 外部规划工具产物识别；接管后合并到中文标准文档或任务执行卡，原始文件可归档到 `docs/.superpowers-archive/`
+- 英文版本文档名只作为旧格式识别 / 兼容，不作为新建文档默认示例
 - 不建议目录名直接使用“学生模块最终版”“学生模块最新”这类会不断失效的名字
 - 同一个模块长期维护，优先在原目录内迭代，不反复新建同名目录
 
@@ -161,29 +178,29 @@ docs/
 至少准备：
 
 - `README.md`（如果项目文档入口还没有）
-- `01-requirements.md`
-- `03-technical-design.md`
-- `06-implementation.md`
+- `v0.1/01-需求说明.md`
+- `v0.1/03-技术设计.md`
+- `v0.1/06-开发实施.md`
 
 按场景追加：
 
-- 有前后端联调或新接口，补 `05-api.md`
-- 有表结构变化，补 `04-database.md`
+- 有前后端联调或新接口，补 `v0.1/05-接口说明.md`
+- 有表结构变化，补 `v0.1/04-数据库设计.md`
 
 #### L3 / L4
 
 至少准备：
 
 - `README.md`
-- `01-requirements.md`
-- `02-product-design.md`
-- `03-technical-design.md`
-- `06-implementation.md`
+- `v0.1/01-需求说明.md`
+- `v0.1/02-产品设计.md`
+- `v0.1/03-技术设计.md`
+- `v0.1/06-开发实施.md`
 
 必须按场景追加：
 
-- 有表结构变化，补 `04-database.md`
-- 有前后端联调或新接口，补 `05-api.md`
+- 有表结构变化，补 `v0.1/04-数据库设计.md`
+- 有前后端联调或新接口，补 `v0.1/05-接口说明.md`
 
 ### 开发完成后
 
@@ -198,14 +215,14 @@ docs/
 
 至少更新：
 
-- `07-test-checklist.md`
-- `08-delivery.md`
+- `v0.1/07-测试清单.md`
+- `v0.1/08-交付说明.md`
 - `README.md`
-- `00-system/system-function-manual.md`
+- `00-system/系统功能说明.md`
 
 如果影响系统结构、角色权限、模块边界、页面入口、外部依赖、部署配置，再继续更新：
 
-- `00-system/system-overview.md`
+- `00-system/系统总说明.md`
 
 ## 维护原则
 

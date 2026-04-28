@@ -282,13 +282,33 @@
 
 ## 文档命名
 
-- 文档目录名优先使用模块英文名
-- 文档文件名前加顺序号，保证阅读顺序稳定
+### 文档命名优先级
 
-推荐：
+文档命名和代码命名不同，必须先看项目已有文档体系：
 
-- `docs/01-modules/student/01-requirements.md`
-- `docs/01-modules/student/03-technical-design.md`
+1. 用户当前明确要求
+2. **当前项目已有文档命名风格**
+3. 本文档
+4. `base` / skill 模板中的旧格式示例
+
+硬规则：
+
+- 如果项目已有 `01-新人先看.md`、`03-功能开发怎么走.md`、`07-任务执行卡模板.md` 这类中文编号命名，新建模块文档也必须优先继续使用中文编号命名。
+- 英文文件名只能作为旧格式兼容或外部工具产物识别，不能作为新建项目文档默认命名。
+- Superpowers 产物 `task_plan.md`、`findings.md`、`progress.md` 必须映射到中文标准文件或任务执行卡章节；接管后可归档到 `docs/.superpowers-archive/`，不能保留为项目标准入口。
+
+推荐中文编号示例：
+
+- `docs/01-modules/student/README.md`
+- `docs/01-modules/student/v0.1/00-任务执行卡.md`
+- `docs/01-modules/student/v0.1/01-需求说明.md`
+- `docs/01-modules/student/v0.1/03-技术设计.md`
+- `docs/01-modules/student/v0.1/06-开发实施.md`
+
+旧格式识别 / 兼容：
+
+- `v0.1-requirements.md`、`v0.1-implementation.md`、`v0.1-task-card.md` 是待接管 / 待迁移对象，不是新文件默认名称。
+- `01-requirements.md`、`06-implementation.md` 等英文编号文件只在项目已经稳定使用该风格时继续沿用。
 
 ## 推荐词汇表
 
