@@ -8,7 +8,7 @@ import {
   MidwayWebRouterService,
 } from '@midwayjs/core';
 import * as koa from '@midwayjs/koa';
-// import * as crossDomain from '@midwayjs/cross-domain';
+import * as crossDomain from '@midwayjs/cross-domain';
 import * as validate from '@midwayjs/validate';
 import * as info from '@midwayjs/info';
 import * as staticFile from '@midwayjs/static-file';
@@ -18,6 +18,7 @@ import * as LocalConfig from './config/config.local';
 import * as ProdConfig from './config/config.prod';
 import * as cool from '@cool-midway/core';
 import * as upload from '@midwayjs/upload';
+import * as socketio from '@midwayjs/socketio';
 // import * as task from '@cool-midway/task';
 // import * as rpc from '@cool-midway/rpc';
 
@@ -26,7 +27,7 @@ import * as upload from '@midwayjs/upload';
     // https://koajs.com/
     koa,
     // 是否开启跨域(注：顺序不能乱放！！！) http://www.midwayjs.org/docs/extensions/cross_domain
-    // crossDomain,
+    crossDomain,
     // 静态文件托管 https://midwayjs.org/docs/extensions/static_file
     staticFile,
     // orm https://midwayjs.org/docs/extensions/orm
@@ -43,6 +44,8 @@ import * as upload from '@midwayjs/upload';
     // rpc,
     // 任务与队列
     // task,
+    // socketio，https://midwayjs.org/docs/extensions/socketio
+    socketio,
     {
       component: info,
       enabledEnvironment: ['local', 'prod'],

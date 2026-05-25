@@ -23,6 +23,20 @@
 4. `04-怎么跟AI说需求.md`
    - 不会写提示词时，直接复制模板用
 
+### 迁移 base 到新项目
+
+如果你要把 base 的 `skills/`、`docs/`、`README.md`、`AGENTS.md` 迁移到新项目，完整入口看：
+
+- `../MIGRATION.md`
+
+文档目录内的补充材料：
+
+- `00-system/base迁移到新项目怎么做.md`
+- `00-system/一句话启动新项目迁移提示词.md`
+- `00-system/迁移变量表模板.md`
+- `00-system/base资产边界说明.md`
+- `00-system/迁移后自检清单.md`
+
 ### 第二组：开始做功能前再看
 
 4. `03-功能开发怎么走.md`
@@ -79,10 +93,18 @@
    - 适合看系统全貌、模块边界、功能入口
    - `系统总说明怎么写.md`：教你怎么写一份让团队成员和 AI 都能快速恢复上下文的系统总说明
    - `项目与base差异怎么记录.md`：教你怎么记录当前项目已经偏离 base 的关键差异
+   - `base迁移到新项目怎么做.md`：教你把 base 规范资产迁移到新项目
+   - `一句话启动新项目迁移提示词.md`：给 AI 的一键迁移提示词
+   - `迁移变量表模板.md`：迁移前要填写的变量
+   - `迁移后自检清单.md`：迁移完成后的检查清单
 
 10. `01-modules/`
    - 放模块级文档
    - 适合看某个具体功能是怎么设计、怎么开发、怎么交付的
+
+11. `docs/skills/`
+   - 放 skill 维护说明
+   - `README.md`：说明 README、docs、AGENTS、skills 的职责边界
 
 ## 常见场景怎么找文档
 
@@ -94,7 +116,7 @@
 - `skills/cool-project-stack/SKILL.md`
 - `skills/cool-team-docs/SKILL.md`
 
-遇到 `task_plan.md`、`findings.md`、`progress.md`、`v*-task-card.md` 时，不要直接继续 Superpowers 流程。当前项目存在 `skills/cool-project-stack/SKILL.md` 时，项目自有 skill 是主流程；先执行 Superpowers 接管，把外部产物合并进当前项目风格的中文标准文档或任务执行卡，补齐 Codex 多 Agent 协作计划、允许修改文件边界和执行记录表，再把状态标记为“待确认”。原始文件建议放到 `docs/.superpowers-archive/`，不要直接删除，也不要继续作为项目标准入口。
+遇到 `task_plan.md`、`findings.md`、`progress.md`、`v*-task-card.md` 时，不要直接继续 Superpowers 流程。具体接管规则以 `skills/cool-project-stack/SKILL.md` 为准。
 
 ### 1. 我是新人，刚接手项目
 先看：

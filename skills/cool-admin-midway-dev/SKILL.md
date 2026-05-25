@@ -15,6 +15,8 @@ description: 适用于 cool-admin-midway 8.x 模块、实体、控制器、服�
 
 先按这个顺序读取本地规则：
 
+如果当前项目目录结构与 base 不同，先按 `../cool-project-stack/references/migration.md` 或新项目 `project.agent.yaml` 的路径映射找到后端目录。
+
 1. `../../cool-admin-midway/.cursorrules`
 2. `../../cool-admin-midway/.cursor/rules/dev-defaults.mdc`
 3. `../../cool-admin-midway/.cursor/rules/anti-pattern.mdc`

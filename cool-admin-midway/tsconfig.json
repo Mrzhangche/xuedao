@@ -21,6 +21,13 @@
     ],
     "outDir": "dist",
     "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@langchain/community/*": ["node_modules/@langchain/community/dist/*"],
+      "@langchain/core/*": ["node_modules/@langchain/core/dist/*"],
+      "@langchain/langgraph/*": ["node_modules/@langchain/langgraph/dist/*"],
+      "langchain/*": ["node_modules/langchain/dist/*"]
+    }
   },
   "exclude": [
     "dist",

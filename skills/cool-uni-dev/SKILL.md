@@ -15,6 +15,8 @@ description: 适用于 cool-uni 页面、路由、接口接入、状态流转、
 
 `cool-uni` 当前没有像 Vue / Midway 那样的本地 `.cursor/rules`，所以必须按这个顺序执行：
 
+如果当前项目目录结构与 base 不同，先按 `../cool-project-stack/references/migration.md` 或新项目 `project.agent.yaml` 的路径映射找到移动端目录。
+
 1. 用户当前要求
 2. 当前项目已有代码结构和页面模式
 3. `../../cool-uni`

@@ -2,6 +2,14 @@
 
 这份文档是给团队成员和 AI 用来判断“当前项目到底改到什么程度了”的。
 
+可直接复制到新项目的空白模板见：
+
+- `skills/cool-project-stack/templates/project-diff-from-base-template.md`
+
+新项目正式文件建议命名为：
+
+- `docs/00-system/项目与base差异记录.md`
+
 很多长期维护项目，最容易出问题的地方，不是不会开发，而是**不知道当前项目已经和 base 偏离了多少**。
 
 一旦这个信息缺失，就很容易出现两种错误：

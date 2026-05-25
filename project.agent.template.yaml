@@ -1,0 +1,76 @@
+version: 1
+
+project:
+  name: "{{PROJECT_NAME}}"
+  code: "{{PROJECT_CODE}}"
+  type: "cool-admin-stack"
+  description: "{{PROJECT_DESCRIPTION}}"
+  default_language: "zh-CN"
+
+base:
+  source: "{{BASE_REPO}}"
+  include:
+    - "skills"
+    - "docs"
+    - "README.md"
+    - "AGENTS.md"
+
+target:
+  path: "{{PROJECT_ROOT}}"
+
+paths:
+  root: "."
+  docs: "{{DOCS_DIR}}"
+  skills: "{{SKILLS_DIR}}"
+  backend: "{{BACKEND_DIR}}"
+  admin: "{{ADMIN_DIR}}"
+  mobile: "{{MOBILE_DIR}}"
+
+roles:
+  backend:
+    enabled: true
+    path: "{{BACKEND_DIR}}"
+    skill: "{{SKILLS_DIR}}/cool-admin-midway-dev/SKILL.md"
+    framework: "cool-admin-midway"
+  admin:
+    enabled: true
+    path: "{{ADMIN_DIR}}"
+    skill: "{{SKILLS_DIR}}/cool-admin-vue-dev/SKILL.md"
+    framework: "cool-admin-vue"
+  mobile:
+    enabled: true
+    path: "{{MOBILE_DIR}}"
+    skill: "{{SKILLS_DIR}}/cool-uni-dev/SKILL.md"
+    framework: "cool-uni"
+
+entrypoints:
+  human:
+    - "README.md"
+    - "{{DOCS_DIR}}/README.md"
+    - "{{DOCS_DIR}}/01-新人先看.md"
+  agent:
+    - "AGENTS.md"
+    - "{{SKILLS_DIR}}/cool-project-stack/SKILL.md"
+    - "{{DOCS_DIR}}/README.md"
+
+migration:
+  overwrite: false
+  backup_existing: true
+  preserve_project_docs: true
+  report: "migration-report.md"
+
+placeholders:
+  PROJECT_NAME: "{{PROJECT_NAME}}"
+  PROJECT_CODE: "{{PROJECT_CODE}}"
+  PROJECT_DESCRIPTION: "{{PROJECT_DESCRIPTION}}"
+  PROJECT_ROOT: "{{PROJECT_ROOT}}"
+  BASE_REPO: "{{BASE_REPO}}"
+  BASELINE_NAME: "{{BASELINE_NAME}}"
+  DOCS_DIR: "{{DOCS_DIR}}"
+  SKILLS_DIR: "{{SKILLS_DIR}}"
+  BACKEND_DIR: "{{BACKEND_DIR}}"
+  ADMIN_DIR: "{{ADMIN_DIR}}"
+  MOBILE_DIR: "{{MOBILE_DIR}}"
+  DATABASE_TYPE: "{{DATABASE_TYPE}}"
+  EXAMPLE_MODULE: "{{EXAMPLE_MODULE}}"
+  MODULE_DOC_STYLE: "{{MODULE_DOC_STYLE}}"

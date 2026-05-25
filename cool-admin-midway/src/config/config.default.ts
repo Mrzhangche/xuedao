@@ -14,6 +14,11 @@ export default {
   koa: {
     port: availablePort(8001),
   },
+  bodyParser: {
+    formLimit: '100mb',
+    jsonLimit: '100mb',
+    textLimit: '100mb',
+  },
   // 开启异步上下文管理
   asyncContextManager: {
     enable: true,

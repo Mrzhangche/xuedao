@@ -1,0 +1,267 @@
+[
+    {
+        "tenantId": null,
+        "name": "知识信息",
+        "router": null,
+        "perms": null,
+        "type": 0,
+        "icon": "icon-dict",
+        "orderNum": 1,
+        "viewPath": null,
+        "keepAlive": true,
+        "isShow": true,
+        "childMenus": [
+            {
+                "tenantId": null,
+                "name": "知识库列表",
+                "router": "/know/data/type",
+                "perms": null,
+                "type": 1,
+                "icon": "icon-menu",
+                "orderNum": 1,
+                "viewPath": "modules/know/views/data/type.vue",
+                "keepAlive": true,
+                "isShow": true,
+                "childMenus": [
+                    {
+                        "tenantId": null,
+                        "name": "知识库配置",
+                        "router": null,
+                        "perms": "know:config:getByFunc,know:config:config,know:config:all,know:config:delete,know:config:update,know:config:info,know:config:page,know:config:add",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "类型删除",
+                        "router": null,
+                        "perms": "know:data:type:delete",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "类型修改",
+                        "router": null,
+                        "perms": "know:data:type:update",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "类型详情",
+                        "router": null,
+                        "perms": "know:data:type:info",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "类型新增",
+                        "router": null,
+                        "perms": "know:data:type:add",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "类型分页",
+                        "router": null,
+                        "perms": "know:data:type:page",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    }
+                ]
+            },
+            {
+                "tenantId": null,
+                "name": "知识库详情",
+                "router": "/know/data/info",
+                "perms": null,
+                "type": 1,
+                "icon": "icon-search",
+                "orderNum": 2,
+                "viewPath": "modules/know/views/data/info.vue",
+                "keepAlive": false,
+                "isShow": false,
+                "childMenus": [
+                    {
+                        "tenantId": null,
+                        "name": "删除",
+                        "router": null,
+                        "perms": "know:data:info:delete",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "修改",
+                        "router": null,
+                        "perms": "know:data:info:update,know:data:info:info",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "单个信息",
+                        "router": null,
+                        "perms": "know:data:info:info",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "列表查询",
+                        "router": null,
+                        "perms": "know:data:info:list",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "分页查询",
+                        "router": null,
+                        "perms": "know:data:info:page",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "新增",
+                        "router": null,
+                        "perms": "know:data:info:add",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "来源列表",
+                        "router": null,
+                        "perms": "know:data:source:page",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    }
+                ]
+            },
+            {
+                "tenantId": null,
+                "name": "知识库图谱",
+                "router": "/know/graph",
+                "perms": null,
+                "type": 1,
+                "icon": "icon-graph",
+                "orderNum": 4,
+                "viewPath": "modules/know/views/graph.vue",
+                "keepAlive": true,
+                "isShow": false,
+                "childMenus": [
+                    {
+                        "tenantId": null,
+                        "name": "权限",
+                        "router": null,
+                        "perms": "know:graph:index:getGraph",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    }
+                ]
+            },
+            {
+                "tenantId": null,
+                "name": "添加内容",
+                "router": "/know/data/add",
+                "perms": null,
+                "type": 1,
+                "icon": "icon-file",
+                "orderNum": 3,
+                "viewPath": "modules/know/views/data/add.vue",
+                "keepAlive": false,
+                "isShow": false,
+                "childMenus": [
+                    {
+                        "tenantId": null,
+                        "name": "权限",
+                        "router": null,
+                        "perms": "know:data:info:search,know:data:info:delete,know:data:info:update,know:data:info:info,know:data:info:list,know:data:info:page,know:data:info:add,know:data:source:search,know:data:source:delete,know:data:source:update,know:data:source:info,know:data:source:list,know:data:source:page,know:data:source:add,know:loader:parseUrl,know:loader:file,know:loader:text,know:loader:link,know:loader:search",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    }
+                ]
+            }
+        ]
+    }
+]

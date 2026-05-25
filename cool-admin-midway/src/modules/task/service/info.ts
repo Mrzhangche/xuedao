@@ -122,13 +122,14 @@ export class TaskInfoService extends BaseService {
     const { id, status } = query;
     const find = await this.taskLogEntity
       .createQueryBuilder('a')
-      .select(['a.*', 'b.name as taskName'])
+      .select(['a.id', 'a.taskId', 'a.status', 'a.detail', 'a.createTime', 'b.name as taskName'])
       .leftJoin(TaskInfoEntity, 'b', 'a.taskId = b.id')
       .where('a.taskId = :id', { id });
     if (status || status == 0) {
       find.andWhere('a.status = :status', { status });
     }
-    return await this.entityRenderPage(find, query);
+    find.orderBy('a.id', 'DESC');
+    return await this.entityRenderPage(find, query, false);
   }
 
   /**

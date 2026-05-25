@@ -15,6 +15,8 @@ description: 适用于 cool-admin-vue 8.x 后台模块、CRUD 页面、表单、
 
 先按这个顺序读取本地规则：
 
+如果当前项目目录结构与 base 不同，先按 `../cool-project-stack/references/migration.md` 或新项目 `project.agent.yaml` 的路径映射找到后台目录。
+
 1. `../../cool-admin-vue/.cursorrules`
 2. `../../cool-admin-vue/.cursor/rules/eps-service-rule.mdc`
 3. `../../cool-admin-vue/.cursor/rules/dev-defaults.mdc`

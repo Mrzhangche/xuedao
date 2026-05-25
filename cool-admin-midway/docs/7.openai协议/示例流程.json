@@ -1,0 +1,472 @@
+{
+  "tenantId": null,
+  "name": "测试",
+  "label": "test",
+  "description": null,
+  "status": 1,
+  "version": 11,
+  "data": {
+    "nodes": [
+      {
+        "id": "1",
+        "type": "start",
+        "initialized": false,
+        "position": {
+          "x": 304.0732778704215,
+          "y": 277.124217213828
+        },
+        "data": {
+          "inputParams": [
+            {
+              "label": "内容",
+              "field": "content",
+              "type": "text",
+              "required": true,
+              "name": "content",
+              "nodeId": "1",
+              "nodeType": "start"
+            },
+            {
+              "type": "text",
+              "field": "messages",
+              "label": "完整信息",
+              "required": 1,
+              "name": "messages",
+              "nodeId": "1",
+              "nodeType": "start"
+            },
+            {
+              "type": "text",
+              "field": "prompt",
+              "label": "提示词",
+              "required": 0,
+              "name": "prompt",
+              "nodeId": "1",
+              "nodeType": "start"
+            }
+          ]
+        },
+        "label": "开始",
+        "description": "开始节点",
+        "color": "#409eff",
+        "handle": {
+          "target": false
+        },
+        "name": "node-start",
+        "icon": "start",
+        "cardWidth": "430px",
+        "_index": 1
+      },
+      {
+        "id": "2",
+        "type": "end",
+        "initialized": false,
+        "position": {
+          "x": 1146,
+          "y": 336
+        },
+        "data": {
+          "outputParams": [
+            {
+              "field": "content",
+              "name": "text",
+              "nodeId": "3",
+              "type": "string",
+              "value": "",
+              "nodeType": "llm"
+            }
+          ]
+        },
+        "group": "逻辑",
+        "label": "结束",
+        "description": "结束节点",
+        "color": "#f56c6c",
+        "handle": {
+          "source": false
+        },
+        "name": "node-end",
+        "icon": "end",
+        "cardWidth": "430px",
+        "_index": 1
+      },
+      {
+        "id": "3",
+        "type": "llm",
+        "initialized": false,
+        "position": {
+          "x": 717,
+          "y": 368
+        },
+        "data": {
+          "inputParams": [
+            {
+              "field": "input",
+              "name": "content",
+              "nodeId": "1",
+              "type": "text",
+              "value": "",
+              "nodeType": "start"
+            },
+            {
+              "field": "messages",
+              "name": "messages",
+              "nodeId": "1",
+              "type": "text",
+              "value": "",
+              "nodeType": "start"
+            },
+            {
+              "field": "prompt",
+              "name": "prompt",
+              "nodeId": "1",
+              "type": "text",
+              "value": "",
+              "nodeType": "start"
+            }
+          ],
+          "outputParams": [
+            {
+              "type": "string",
+              "field": "text"
+            },
+            {
+              "type": "stream",
+              "field": "stream"
+            }
+          ],
+          "options": {
+            "model": {
+              "options": [
+                {
+                  "field": "temperature",
+                  "type": "number",
+                  "title": "温度",
+                  "default": 0.7,
+                  "enable": true,
+                  "max": 1,
+                  "min": 0.1,
+                  "supports": [],
+                  "value": 0.7
+                }
+              ],
+              "params": {
+                "model": "qwen-turbo-latest",
+                "temperature": 0.7
+              },
+              "supplier": "openai",
+              "supplierName": "通义千问",
+              "configId": 2,
+              "comm": {
+                "apiKey": "xxxxx",
+                "configuration": {
+                  "baseURL": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+                }
+              }
+            },
+            "messages": [
+              {
+                "role": "system",
+                "content": "{prompt}​\n\n以下是历史消息：\n\n{messages}​\n\n"
+              },
+              {
+                "role": "user",
+                "content": "{input}​\n"
+              }
+            ],
+            "history": 0,
+            "isOutput": true,
+            "toolConfig": [],
+            "mcpConfig": []
+          }
+        },
+        "group": "AI",
+        "label": "LLM",
+        "description": "调用大语言模型回答问题",
+        "color": "#409eff",
+        "name": "node-llm",
+        "icon": "llm",
+        "cardWidth": "430px",
+        "_index": 1
+      }
+    ],
+    "edges": [
+      {
+        "id": "vueflow__edge-1source-3target",
+        "type": "button",
+        "source": "1",
+        "target": "3",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "updatable": true,
+        "data": {
+          "show": false
+        },
+        "label": "",
+        "animated": false,
+        "style": {},
+        "sourceX": 608.0732788900261,
+        "sourceY": 301.12420033512205,
+        "targetX": 712.9999604377289,
+        "targetY": 391.99996564515106,
+        "_stroke": "#4165d7"
+      },
+      {
+        "id": "vueflow__edge-3source-2target",
+        "type": "button",
+        "source": "3",
+        "target": "2",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "updatable": true,
+        "data": {
+          "show": false
+        },
+        "label": "",
+        "animated": false,
+        "style": {},
+        "sourceX": 1021.0000333416401,
+        "sourceY": 391.99996564515106,
+        "targetX": 1141.9999604377288,
+        "targetY": 359.99996564515106,
+        "_stroke": "#4165d7"
+      }
+    ],
+    "viewport": {
+      "x": -65.74397513473082,
+      "y": 4.442030922226195,
+      "zoom": 0.9194740458327713
+    }
+  },
+  "draft": {
+    "nodes": [
+      {
+        "id": "1",
+        "type": "start",
+        "initialized": false,
+        "position": {
+          "x": 304.0732778704215,
+          "y": 277.124217213828
+        },
+        "data": {
+          "inputParams": [
+            {
+              "label": "内容",
+              "field": "content",
+              "type": "text",
+              "required": true,
+              "name": "content",
+              "nodeId": "1",
+              "nodeType": "start"
+            },
+            {
+              "type": "text",
+              "field": "messages",
+              "label": "完整信息",
+              "required": 1,
+              "name": "messages",
+              "nodeId": "1",
+              "nodeType": "start"
+            },
+            {
+              "type": "text",
+              "field": "prompt",
+              "label": "提示词",
+              "required": 0,
+              "name": "prompt",
+              "nodeId": "1",
+              "nodeType": "start"
+            }
+          ]
+        },
+        "label": "开始",
+        "description": "开始节点",
+        "color": "#409eff",
+        "handle": {
+          "target": false
+        },
+        "name": "node-start",
+        "icon": "start",
+        "cardWidth": "430px",
+        "_index": 1
+      },
+      {
+        "id": "2",
+        "type": "end",
+        "initialized": false,
+        "position": {
+          "x": 1146,
+          "y": 336
+        },
+        "data": {
+          "outputParams": [
+            {
+              "field": "content",
+              "name": "text",
+              "nodeId": "3",
+              "type": "string",
+              "value": "",
+              "nodeType": "llm"
+            }
+          ]
+        },
+        "group": "逻辑",
+        "label": "结束",
+        "description": "结束节点",
+        "color": "#f56c6c",
+        "handle": {
+          "source": false
+        },
+        "name": "node-end",
+        "icon": "end",
+        "cardWidth": "430px",
+        "_index": 1
+      },
+      {
+        "id": "3",
+        "type": "llm",
+        "initialized": false,
+        "position": {
+          "x": 717,
+          "y": 368
+        },
+        "data": {
+          "inputParams": [
+            {
+              "field": "input",
+              "name": "content",
+              "nodeId": "1",
+              "type": "text",
+              "value": "",
+              "nodeType": "start"
+            },
+            {
+              "field": "messages",
+              "name": "messages",
+              "nodeId": "1",
+              "type": "text",
+              "value": "",
+              "nodeType": "start"
+            },
+            {
+              "field": "prompt",
+              "name": "prompt",
+              "nodeId": "1",
+              "type": "text",
+              "value": "",
+              "nodeType": "start"
+            }
+          ],
+          "outputParams": [
+            {
+              "type": "string",
+              "field": "text"
+            },
+            {
+              "type": "stream",
+              "field": "stream"
+            }
+          ],
+          "options": {
+            "model": {
+              "options": [
+                {
+                  "field": "temperature",
+                  "type": "number",
+                  "title": "温度",
+                  "default": 0.7,
+                  "enable": true,
+                  "max": 1,
+                  "min": 0.1,
+                  "supports": [],
+                  "value": 0.7
+                }
+              ],
+              "params": {
+                "model": "qwen-turbo-latest",
+                "temperature": 0.7
+              },
+              "supplier": "openai",
+              "supplierName": "通义千问",
+              "configId": 2,
+              "comm": {
+                "apiKey": "xxxx",
+                "configuration": {
+                  "baseURL": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+                }
+              }
+            },
+            "messages": [
+              {
+                "role": "system",
+                "content": "{prompt}​\n\n以下是历史消息：\n\n{messages}​\n\n"
+              },
+              {
+                "role": "user",
+                "content": "{input}​\n"
+              }
+            ],
+            "history": 0,
+            "isOutput": true,
+            "toolConfig": [],
+            "mcpConfig": []
+          }
+        },
+        "group": "AI",
+        "label": "LLM",
+        "description": "调用大语言模型回答问题",
+        "color": "#409eff",
+        "name": "node-llm",
+        "icon": "llm",
+        "cardWidth": "430px",
+        "_index": 1
+      }
+    ],
+    "edges": [
+      {
+        "id": "vueflow__edge-1source-3target",
+        "type": "button",
+        "source": "1",
+        "target": "3",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "updatable": true,
+        "data": {
+          "show": false
+        },
+        "label": "",
+        "animated": false,
+        "style": {},
+        "sourceX": 608.0732788900261,
+        "sourceY": 301.12420033512205,
+        "targetX": 712.9999604377289,
+        "targetY": 391.99996564515106,
+        "_stroke": "#4165d7"
+      },
+      {
+        "id": "vueflow__edge-3source-2target",
+        "type": "button",
+        "source": "3",
+        "target": "2",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "updatable": true,
+        "data": {
+          "show": false
+        },
+        "label": "",
+        "animated": false,
+        "style": {},
+        "sourceX": 1021.0000333416401,
+        "sourceY": 391.99996564515106,
+        "targetX": 1141.9999604377288,
+        "targetY": 359.99996564515106,
+        "_stroke": "#4165d7"
+      }
+    ],
+    "viewport": {
+      "x": -64.74397513473082,
+      "y": 3.442030922226195,
+      "zoom": 0.9194740458327713
+    }
+  }
+}

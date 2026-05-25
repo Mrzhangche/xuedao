@@ -52,6 +52,36 @@
 bash skills/cool-project-stack/scripts/install-team-skills.sh
 ```
 
+## 迁移到新项目
+
+如果要把这套规范资产迁移到新项目，不要直接复制后手工全局替换。
+
+迁移总入口只有一个：
+
+- `MIGRATION.md`
+
+相关文件：
+
+- `project.agent.template.yaml`
+- `AGENTS.md`
+- `docs/00-system/一句话启动新项目迁移提示词.md`
+- `docs/00-system/base迁移到新项目怎么做.md`
+- `docs/00-system/迁移后自检清单.md`
+
+新项目根 README 不建议直接照搬当前 README。迁移时应保留新项目已有启动方式，并参考这个模板重写：
+
+- `skills/cool-project-stack/templates/project-bootstrap-readme-template.md`
+
+AI 接手入口建议使用：
+
+- `AGENTS.md`
+
+迁移脚本默认 dry-run：
+
+```bash
+node scripts/migrate-to-project.mjs --config /path/to/new-project/project.agent.yaml
+```
+
 ## 常见任务怎么走
 
 ### 1. 小修复

@@ -1,0 +1,200 @@
+[
+    {
+        "tenantId": null,
+        "name": "流程管理",
+        "router": null,
+        "perms": null,
+        "type": 0,
+        "icon": "icon-activity",
+        "orderNum": 1,
+        "viewPath": null,
+        "keepAlive": true,
+        "isShow": true,
+        "childMenus": [
+            {
+                "tenantId": null,
+                "name": "流程列表",
+                "router": "/flow/list",
+                "perms": null,
+                "type": 1,
+                "icon": "icon-menu",
+                "orderNum": 1,
+                "viewPath": "modules/flow/views/list.vue",
+                "keepAlive": true,
+                "isShow": true,
+                "childMenus": [
+                    {
+                        "tenantId": null,
+                        "name": "列表查询",
+                        "router": null,
+                        "perms": "flow:info:list",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "修改",
+                        "router": null,
+                        "perms": "flow:info:update",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "发布流程",
+                        "router": null,
+                        "perms": "flow:info:release",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "单个信息",
+                        "router": null,
+                        "perms": "flow:info:info",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "分页查询",
+                        "router": null,
+                        "perms": "flow:info:page",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "删除",
+                        "router": null,
+                        "perms": "flow:info:delete",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "新增",
+                        "router": null,
+                        "perms": "flow:info:add",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    }
+                ]
+            },
+            {
+                "tenantId": null,
+                "name": "流程编排",
+                "router": "/flow/info",
+                "perms": null,
+                "type": 1,
+                "icon": "icon-activity",
+                "orderNum": 2,
+                "viewPath": "modules/flow/views/info.vue",
+                "keepAlive": false,
+                "isShow": false,
+                "childMenus": [
+                    {
+                        "tenantId": null,
+                        "name": "发布流程",
+                        "router": null,
+                        "perms": "flow:info:release",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "查看流程",
+                        "router": null,
+                        "perms": "flow:info:info",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "修改流程",
+                        "router": null,
+                        "perms": "flow:info:update",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    },
+                    {
+                        "tenantId": null,
+                        "name": "调试",
+                        "router": null,
+                        "perms": "flow:run:debug",
+                        "type": 2,
+                        "icon": null,
+                        "orderNum": 0,
+                        "viewPath": null,
+                        "keepAlive": true,
+                        "isShow": true,
+                        "childMenus": []
+                    }
+                ]
+            },
+            {
+                "tenantId": null,
+                "name": "流程配置",
+                "router": null,
+                "perms": "flow:config:node:config,flow:config:node:delete,flow:config:node:update,flow:config:node:types,flow:config:node:page,flow:config:node:add,flow:config:info:getByNode,flow:config:info:delete,flow:config:info:update,flow:config:info:info,flow:config:info:page,flow:config:info:add",
+                "type": 2,
+                "icon": null,
+                "orderNum": 2,
+                "viewPath": null,
+                "keepAlive": true,
+                "isShow": true,
+                "childMenus": []
+            }
+        ]
+    }
+]

@@ -105,6 +105,8 @@ description: 团队级总控 skill，适用于基于 base 模板初始化的 coo
 
 激活后先完成 6 件事：
 
+如果当前任务是“初始化新项目 / 迁移 base 规范包 / 同步 skills 或 docs”，先读取 `./references/migration.md`，不要直接进入普通功能开发流程。
+
 1. 判断当前需求属于 `cool-admin-vue`、`cool-admin-midway`、`cool-uni` 中的哪一端，或是否为跨端任务。
 2. 先看当前项目已有结构，再看 `base` 模板，不允许直接跳到“通用最佳实践”。
 3. 如果项目已经进入长期维护阶段，或任务属于复杂功能、高影响修改、核心模块修改，先恢复项目理解：
